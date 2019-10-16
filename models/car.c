@@ -1,29 +1,14 @@
-//Aula 1 de Compuação Gráfica
-//Data: 11/09/2019
-//Programa para criar um braço mecânico em 3D com movimentos.
-//Desenvolvedores: Giovana Giardini e Rafael Campos
-
-//Desenvolvido no Ubuntu 18.04.3 LTS. 
-//Para compilar execute o comando gcc Aula1_braco_mec.c -o braco -lglut -lGLU -lGL -lm e para executar ./braco
-
-//Controles do programa:
-//botôes x, y e z escolhem em relação a qual eixo que o braço vai girar. x: eixo x, y: eixo y, z:eixo z.
-//botões w e s movimentam o braço todo.
-//botões a e d movimentam a partir da esfera do meio.
-//setas do teclado movimentam a câmera.
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <GL/freeglut.h>
 
 //Declaração de Variáveis Globais
-//Ângulos dos cubos que formam o braço
-int anguloBola1emX = 0, anguloBola1emY = 0, anguloBola1emZ = 0, anguloBola2emX = 0, anguloBola2emY = 0, anguloBola2emZ = 0;
 int posx=0, posy=10, posz=20; //Variáveis que definem a posição da câmera
 int oy=0,ox=0,oz=0;  //Variáveis que definem para onde a câmera olha
 int lx=0, ly=1,  lz=0; //Variáveis que definem qual eixo estará na vertical do monitor.
 int eixoDeRotacao = 0; //Variável que define em qual eixo o braço será rotacionado
+int projecao = 0;
 
 /* Radian angle increment value. */
 #define RADIAN_INCR 0.017453293
@@ -58,7 +43,10 @@ void Display()
    glMatrixMode(GL_PROJECTION);//glMatrixMode()- define qual matriz será alterada.
    glLoadIdentity();//"Limpa" ou "transforma" a matriz em identidade, reduzindo possíveis erros.
 
-   gluPerspective(45,1,1,150); //Define a projeçãoo como perspectiva
+   if (projecao == 1)
+      gluPerspective(45,1,1,150); //Define a projeção como perspectiva
+   else
+      glOrtho(-25, 25, -25, 25, -25, 25);
    
    glMatrixMode(GL_MODELVIEW);//glMatrixMode()- define qual matriz será alterada
    glLoadIdentity(); //"Limpa" ou "transforma" a matriz em identidade, reduzindo possíveis erros.
@@ -78,20 +66,51 @@ void rotateCamera(int multiplier) {
 }
 
 void buildCar(){
+   
+   // Rodas
+   glTranslatef(2, 0, 2);
+   glScalef(1, 1, 1);
+   glColor3ub(0, 255, 0);
+   glutSolidSphere(1, 50, 50);
 
-   glScalef(6, 2, 4);//Escala, tamanho, do cubo 1.
+   glTranslatef(-5, 0, 0);
+   glScalef(1, 1, 1);
+   glColor3ub(0, 255, 0);
+   glutSolidSphere(1, 50, 50);
+
+   glTranslatef(0, 0, -4);
+   glScalef(1, 1, 1);
+   glColor3ub(0, 255, 0);
+   glutSolidSphere(1, 50, 50);
+
+   glTranslatef(5, 0, 0);
+   glScalef(1, 1, 1);
+   glColor3ub(0, 255, 0);
+   glutSolidSphere(1, 50, 50);
+   
+   // Chassi
+   glTranslatef(-2, 2, 2);
+   glScalef(10, 3, 6);//Escala, tamanho, do cubo 1.
    glColor3ub(0, 0, 255);//Cor do cubo 1
-   glutWireCube(1);//Definição (criação) do cubo 1
+   glutSolidCube(1);//Definição (criação) do cubo 1
 
-   glTranslatef(-0.2, 1, 0);
-   glScalef(0.7, 0.8, 1);//Escala, tamanho, do cubo 1.
+   // Teto
+   glTranslatef(-0.15, 0.8, 0);
+   glScalef(0.8, 1.5, 2);//Escala, tamanho, do cubo 1.
    glColor3ub(0, 0, 255);//Cor do cubo 1
-   glutSolidCube(1);
+   glutSolidCube(0.5);
+   
+   // Vidro da frente
+   glTranslatef(0.21, 0, 0);
+   glScalef(2, 3.5, 4.9);
+   glRotatef(45, 0, 0, 1);
+   glColor3ub(20, 20, 20);
+   glutSolidCube(0.1);
+   glTranslatef(0, -0.1, 0);
+   glScalef(1, 1, 1);
+   glColor3ub(20, 20, 20);
+   glutSolidCube(0.1);
 
-   glTranslatef(1,-2,0);
-   glScalef(0.7, 0.8, 1);//Escala, tamanho, do cubo 1.
-   glColor3ub(0, 255, 0);//Cor do cubo 1
-   glutWireSphere(0.2, 20, 20);
 }
 
 void keyboard (unsigned char key, int x, int y){
@@ -137,6 +156,36 @@ void TeclasEspeciais (int key, int x, int y)
    glutPostRedisplay();
 }
 
+void Mouse(int botao, int estado, int x, int y)
+{  //botão - recebe o código do botão pressionado
+   //estado - recebe se está pressionado ou não
+   //x, y - recebem respectivamente as posições do mouse na tela
+   switch (botao)
+   {
+      case GLUT_LEFT_BUTTON:
+      if (estado == GLUT_DOWN)
+      {                  
+         projecao=1;
+         posx=0; posy=10; posz=20;
+         ox=0,oy=0,oz=0;
+         lx=0, ly=1,lz=0;
+         glutPostRedisplay();
+      }
+      break;
+
+      case GLUT_RIGHT_BUTTON:
+      if(estado == GLUT_DOWN)
+      {
+         projecao=0;
+         posx=0; posy=10; posz=20;
+         oy=0; ox=0;  oz=0;
+         lx=0, ly=1, lz=0;
+         glutPostRedisplay();
+      }
+      break;
+   }
+}
+
 
 int main(int argc,char **argv) {
    glutInit(&argc, argv); // Initializes glut    
@@ -150,6 +199,7 @@ int main(int argc,char **argv) {
    //Chamada das funções de formação da cena
    glutDisplayFunc(Display);
    glutKeyboardFunc(keyboard);
+   glutMouseFunc(Mouse);
    glutSpecialFunc(TeclasEspeciais);
    
    glutMainLoop();
