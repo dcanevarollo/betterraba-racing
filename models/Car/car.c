@@ -38,7 +38,7 @@ void Display()
    
    // Inicializa parâmetros de rendering
    // Define a cor de fundo da janela de visualização como preta
-   glClearColor(0.0, 0.0, 0.0, 0.0);    
+   glClearColor(255, 255, 255, 0.0);    
    
    glMatrixMode(GL_PROJECTION);//glMatrixMode()- define qual matriz será alterada.
    glLoadIdentity();//"Limpa" ou "transforma" a matriz em identidade, reduzindo possíveis erros.
@@ -194,7 +194,7 @@ int main(int argc,char **argv) {
    
    glutInitWindowSize(300, 300);
    glutInitWindowPosition(10, 10);
-   glutCreateWindow("Braço mecânico");
+   glutCreateWindow("Car");
    
    //Chamada das funções de formação da cena
    glutDisplayFunc(Display);
