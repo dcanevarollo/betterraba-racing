@@ -1,1 +1,0 @@
-gcc car.c -o car -lopengl32 -lfreeglut -lglu32 && car.exe
