@@ -4,9 +4,9 @@
  * @author Rafael Campos
  * Função de criação dos objetos que modelam os carros.
  * 
- * @param   : 
+ * @param carColor   : cor do carro a ser criado. 
  */
-void buildCar() {
+void buildCar(Color carColor) {
    // Rodas
    glTranslatef(2, 0, 2);
    glScalef(1, 1, 1);
@@ -30,14 +30,14 @@ void buildCar() {
    
    // Chassi
    glTranslatef(-2, 2, 2);
-   glScalef(10, 3, 6);//Escala, tamanho, do cubo 1.
-   glColor3ub(0, 0, 255);//Cor do cubo 1
-   glutSolidCube(1);//Definição (criação) do cubo 1
+   glScalef(10, 3, 6);
+   glColor3ub(carColor.red, carColor.green, carColor.blue);
+   glutSolidCube(1);
 
    // Teto
    glTranslatef(-0.15, 0.8, 0);
-   glScalef(0.8, 1.5, 2);//Escala, tamanho, do cubo 1.
-   glColor3ub(0, 0, 255);//Cor do cubo 1
+   glScalef(0.8, 1.5, 2);
+   glColor3ub(carColor.red, carColor.green, carColor.blue);
    glutSolidCube(0.5);
    
    // Vidro da frente
