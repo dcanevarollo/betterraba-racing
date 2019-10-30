@@ -5,6 +5,6 @@
 
 #include "../../utils/Color/color.h"
 
-void buildCar();
+void buildCar(Color carColor);
 
 #endif
