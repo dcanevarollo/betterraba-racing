@@ -1,5 +1,15 @@
 #include "color.h"
 
+Color construtor(short int red, short int green, short int blue) {
+  Color color;
+
+  color.red = red;
+  color.green = green;
+  color.blue = blue;
+
+  return color;
+}
+
 Color red() {
   return construtor(255, 0, 0);
 }
@@ -10,4 +20,32 @@ Color green() {
 
 Color blue() {
   return construtor(0, 0, 255);
+}
+
+Color white() {
+  return construtor(255, 255, 255);
+}
+
+Color black() {
+  return construtor(64, 64, 64);
+}
+
+Color grey() {
+  return construtor(160, 160, 160);
+}
+ 
+Color yellow() {
+  return construtor(255, 255, 52);
+}
+
+Color purple() {
+  return construtor(153, 51, 255);
+}
+
+Color lilac() {
+  return construtor(255, 51, 255);
+}
+
+Color orange() {
+  return construtor(255, 128, 0);
 }
