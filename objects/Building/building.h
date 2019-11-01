@@ -6,6 +6,6 @@
 
 #include "../../utils/Color/color.h"
 
-void buildBuilding(Color color, float height, float size);
+void buildBuilding(Color color, float heightScale, float size);
 
 #endif

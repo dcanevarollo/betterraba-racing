@@ -2,6 +2,7 @@
 #define COLOR_H
 
 #include <stdlib.h>
+#include <time.h>
 
 /**
  * @author Douglas Canevarollo
@@ -32,5 +33,7 @@ Color purple();
 Color lilac();
 
 Color orange();
+
+Color random();
 
 #endif
