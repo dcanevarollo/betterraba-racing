@@ -4,7 +4,7 @@
  * @author Rafael Campos
  * Função de criação dos objetos que modelam os carros.
  * 
- * @param carColor   : cor do carro a ser criado. 
+ * @param color   : cor do carro a ser criado. 
  */
 void buildCar(Color color) {
    glPushMatrix();
@@ -52,4 +52,14 @@ void buildCar(Color color) {
    glutSolidCube(0.1);
 
    glPopMatrix();
+}
+
+/**
+ * @author Douglas Canevarollo
+ * Função para criar carros aleatórios (utilizados como obstáculos).
+ */
+void buildRandomCar() {
+   Color randomColor = random();
+
+   buildCar(randomColor);
 }
