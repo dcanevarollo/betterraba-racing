@@ -1,5 +1,10 @@
 #include "color.h"
 
+/**
+ * @author Douglas Canevarollo
+ * Arquivo com funções que retornam determinada cor para usar no cenário.
+ */
+
 Color construtor(short int red, short int green, short int blue) {
   Color color;
 
@@ -60,4 +65,17 @@ Color darkGreen() {
 
 Color beige() {
   return construtor(192, 122, 30);
+}
+
+Color random() {
+  int red, green, blue;
+  time_t seed;
+
+  srand((unsigned) time(&seed));
+
+  red = rand() % 256;
+  green = rand() % 256;
+  blue = rand() % 256;
+
+  return construtor(red, green, blue);
 }

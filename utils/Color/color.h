@@ -2,6 +2,7 @@
 #define COLOR_H
 
 #include <stdlib.h>
+#include <time.h>
 
 /**
  * @author Douglas Canevarollo
@@ -38,5 +39,7 @@ Color brown();
 Color darkGreen();
 
 Color beige();
+
+Color random();
 
 #endif
