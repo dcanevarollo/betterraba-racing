@@ -33,4 +33,10 @@ Color lilac();
 
 Color orange();
 
+Color brown();
+
+Color darkGreen();
+
+Color beige();
+
 #endif
