@@ -8,6 +8,4 @@
 
 void buildCar(Color color);
 
-void buildRandomCar();
-
 #endif

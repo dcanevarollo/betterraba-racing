@@ -1,5 +1,4 @@
 #include "car.h"
-#include "../../utils/Color/color.h"
 
 /**
  * @author Rafael Campos
@@ -53,14 +52,4 @@ void buildCar(Color color) {
    glutSolidCube(0.1);
 
    glPopMatrix();
-}
-
-/**
- * @author Douglas Canevarollo
- * Função para criar carros aleatórios (utilizados como obstáculos).
- */
-void buildRandomCar() {
-   Color randomColor = random();
-
-   buildCar(randomColor);
 }
