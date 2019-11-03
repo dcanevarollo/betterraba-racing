@@ -55,6 +55,18 @@ Color orange() {
   return construtor(255, 128, 0);
 }
 
+Color brown() {
+  return construtor(63, 10, 10);
+}
+
+Color darkGreen() {
+  return construtor(2, 47, 13);
+}
+
+Color beige() {
+  return construtor(192, 122, 30);
+}
+
 Color random() {
   int red, green, blue;
   time_t seed;
