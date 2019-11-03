@@ -1,0 +1,1 @@
+gcc tests.c <test_obj.h> <test_obj.c> ../utils/Color/color.h ../utils/Color/color.c -o tests.exe -lopengl32 -lfreeglut -lglu32

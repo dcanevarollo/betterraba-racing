@@ -9,14 +9,14 @@
  * 
  * @param color       : cor do prédio a ser construído.
  * @param heightScale : altura do prédio (multiplicará, em y, o parâmetro size). Utilizar valor entre 1 e 4.
- * @param size        : tamanho do cubo que desenhará o prédio. Utilizar valor entre 6 e 8.
- */
+ * @param size        : tamanho do cubo que desenhará o prédio. Utilizar valor entre 6 e 7. */
 void buildBuilding(Color color, float heightScale, float size) {
   glPushMatrix();
 
   /* Estrutura principal. */
   glColor3ub(color.red, color.green, color.blue);
   glScalef(1, heightScale, 1);
+  glTranslatef(0, heightScale, 0);
   glutSolidCube(size);
 
   /* Janelas. */
@@ -27,7 +27,7 @@ void buildBuilding(Color color, float heightScale, float size) {
   glScalef(1, 1/heightScale, 1);
 
   /* Em z, acrescentamos 1.1 à coordenada para que a janela fique levemente sobreposta ao prédio. */
-  glTranslatef(-(size/4), 0, size/4 + 1.1);
+  glTranslatef(-(size/4), 0, size/4 + 1);
   glutSolidCube(WINDOW_SIZE);
 
   glTranslatef(size/2, 0, 0);
