@@ -5,6 +5,9 @@
  * Arquivo que define o método para construir a pista Deserto. 
  */
 
+/*  Método para construir o cenário do deserto, chama as funções para construir a rua, 
+    as partes de areia na direita e esquerda e as funções para criar os cactos e fenos. 
+*/
 void buildDesertScenario() {
     buildStreet();
     buildDesertFloor();
@@ -29,6 +32,7 @@ void buildDesertScenario() {
     glPopMatrix();
 }
 
+/* Método para criar o chão de areia que ficará ao redor da rua. */
 void buildDesertFloor() {
     glPushMatrix();
 
