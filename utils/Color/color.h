@@ -40,6 +40,10 @@ Color darkGreen();
 
 Color beige();
 
+Color darkGrey();
+
+Color lightOrange();
+
 Color random();
 
 #endif
