@@ -70,6 +70,13 @@ Color beige() {
 Color sand() {
   return construtor(219, 159, 129);
 }
+Color darkGrey() {
+  return construtor(96, 96, 96);
+}
+
+Color lightOrange() {
+  return construtor(255, 204, 153);
+}
 
 Color random() {
   int red, green, blue;

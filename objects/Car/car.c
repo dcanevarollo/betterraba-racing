@@ -8,6 +8,7 @@
  */
 void buildCar(Color color) {
    glPushMatrix();
+
    // Rodas
    Color wheelColor = black();
 

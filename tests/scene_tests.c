@@ -13,12 +13,9 @@
  * Inclua o arquivo que deseja testar aqui. Por exemplo:
  * #include "../objects/Car/car.h"
  */
-// #include "../objects/Building/building.h"
-#include "../objects/Street/street.h"
-#include "../objects/Car/car.h"
+#include "../scenarios/Urban/urban.h"
 
 void display();
-void drawProjectionCube();
 void drawAxis();
 void rotateCamera();
 void keyboard(unsigned char key, int x, int y);
@@ -41,8 +38,8 @@ void display() {
   glEnable(GL_SMOOTH);
   glEnable(GL_BLEND);
 
-  /* A cor de fundo será preta. */
-  glClearColor(0, 0, 0, 0);
+  /* Define a cor de fundo (o "céu"). */
+  glClearColor(204.0f/255.0f, 229.0f/255.0f,  1.0f, 1.0f);
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -59,10 +56,12 @@ void display() {
   drawAxis();
 
   /* Cenários e objetos a serem construídos. */  
-  buildStreet();
+  buildUrbanScenario();
+
+  /* Renderização do carro. */
+  glTranslatef(0, 1, 20);  // Posiciona o carro na faixa central.
+  glRotatef(90, 0, 1, 0);  // Coloca o carro virado para frente.
   Color carColor = blue();
-  glTranslatef(0, 1, 20);
-  glRotatef(90, 0, 1, 0);
   buildCar(carColor);
 
   glutSwapBuffers();

@@ -4,11 +4,10 @@
 
 /**
  * @author Douglas Canevarollo
- * Cria um objeto que simula um prédio para uma das pistas. As cores e tamanhos serão definidas aleatoriamente, visto
- * que serão utilizados para compor o cenário do jogo.
+ * Cria um objeto que simula um prédio para uma das pistas.
  * 
  * @param color       : cor do prédio a ser construído.
- * @param heightScale : altura do prédio (multiplicará, em y, o parâmetro size). Utilizar valor entre 1 e 4.
+ * @param heightScale : altura do prédio (multiplicará, em y, o parâmetro size). Utilizar valor entre 2 e 4.
  * @param size        : tamanho do cubo que desenhará o prédio. Utilizar valor entre 6 e 7. */
 void buildBuilding(Color color, float heightScale, float size) {
   glPushMatrix();
@@ -16,7 +15,7 @@ void buildBuilding(Color color, float heightScale, float size) {
   /* Estrutura principal. */
   glColor3ub(color.red, color.green, color.blue);
   glScalef(1, heightScale, 1);
-  glTranslatef(0, heightScale, 0);
+  glTranslatef(0, size/2, 0);
   glutSolidCube(size);
 
   /* Janelas. */
