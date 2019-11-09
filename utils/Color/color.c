@@ -67,6 +67,14 @@ Color beige() {
   return construtor(192, 122, 30);
 }
 
+Color darkGrey() {
+  return construtor(96, 96, 96);
+}
+
+Color lightOrange() {
+  return construtor(255, 204, 153);
+}
+
 Color random() {
   int red, green, blue;
   time_t seed;
