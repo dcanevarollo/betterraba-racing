@@ -11,7 +11,5 @@
 void imprimir(int x, int y,int z, char *string);
 void makeBlock(int x, int y, int z, Color color);
 void buildMenu();
-int main(int argc,char **argv);
-void keyboard (unsigned char key, int x, int y);
 
 #endif

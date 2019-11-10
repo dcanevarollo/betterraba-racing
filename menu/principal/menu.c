@@ -3,8 +3,6 @@
 */ 
 #include "menu.h"
 
-#include "../objects/Car/car.h"
-
 void imprimir(int x, int y,int z, char *string){
     glColor3f(1, 1, 1);          //era pra controlar a cor mas nao consigo fzer funcionar
     glRasterPos2f(x,y);
