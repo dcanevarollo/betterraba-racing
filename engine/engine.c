@@ -5,6 +5,8 @@
 #define true 1
 #define false 0
 
+#define INIT_POS -20
+
 /* Constantes de troca de faixas. */
 #define TO_LEFT -1
 #define TO_RIGHT 1
@@ -14,8 +16,11 @@
 #define LEFT_LANE -12
 
 
+bool firstRender = true;
+
 /* Variáveis de manipulação dos objetos do jogo. */
-float carPosX = 0;
+Boundary carBoundary;
+Boundary obstaclesBoundaries[4];
 
 /* Variáveis de controle. */
 bool carAnimationEnabled = false;
@@ -24,13 +29,16 @@ int animationSide;
 int nextLane;
 
 
+/**
+ * Trata a renderização dos obstáculos na pista. A distância em z e a faixa que aparecerão serão aleatórios.
+ */
 void obstaclesGraphicEngine() {
-  int lane;
-  float distance;
-
   glPushMatrix();
   
-  buildTrafficCone(lane, distance);
+  buildTrafficCone(obstaclesBoundaries[0].lane, obstaclesBoundaries[0].distance);
+  buildStone(obstaclesBoundaries[1].lane, obstaclesBoundaries[1].distance);
+  buildBox(obstaclesBoundaries[2].lane, obstaclesBoundaries[2].distance);
+  buildRandomCar(obstaclesBoundaries[3].lane, obstaclesBoundaries[3].distance);
 
   glPopMatrix();
 }
@@ -44,7 +52,7 @@ void carGraphicEngine() {
   if (carAnimationEnabled)
     changeLanes(animationSide);
 
-  buildCar(green(), carPosX);
+  buildCar(green(), carBoundary.lane, carBoundary.distance);
 
   glPopMatrix();
 }
@@ -57,25 +65,65 @@ void carGraphicEngine() {
  * @param side  : indica para qual lado será a troca. Se esquerda, side == -1, se direita, side == 1.
  */
 void changeLanes(int side) {
-  carPosX += side * 0.1;
+  carBoundary.lane += side * 0.1;
 
   if (side == TO_RIGHT) {
     nextLane = currentLane == MIDDLE_LANE ? RIGHT_LANE : MIDDLE_LANE;
 
-    if (carPosX >= nextLane) {
+    if (carBoundary.lane >= nextLane) {
       carAnimationEnabled = false;
       currentLane = nextLane;
     }
   } else if (side == TO_LEFT) {
     nextLane = currentLane == MIDDLE_LANE ? LEFT_LANE : MIDDLE_LANE;
 
-    if (carPosX <= nextLane) {
+    if (carBoundary.lane <= nextLane) {
       carAnimationEnabled = false;
       currentLane = nextLane;
     }
   }
 
   glutPostRedisplay();
+}
+
+void createCarBoundary() {
+  carBoundary.lane = MIDDLE_LANE;
+  carBoundary.distance = INIT_POS;
+}
+
+void createObstacleBoundary() {
+  int i;
+  int lane;
+  float distance;
+  time_t seed;
+
+  srand((unsigned) time(&seed));
+
+  for (i = 0; i < 4; i++) {
+    lane = rand() % 3;
+    distance = (rand() % 100) + 10;
+
+    switch(lane) {
+      case 0:
+        lane = LEFT_LANE;
+        break;
+
+      case 1:
+        lane = MIDDLE_LANE;
+        break;
+
+      case 2:
+        lane = RIGHT_LANE;
+        break;
+
+      default:
+        lane = MIDDLE_LANE;
+        break;
+    }
+
+    obstaclesBoundaries[i].lane = lane;
+    obstaclesBoundaries[i].distance = distance;
+  }
 }
 
 /**
@@ -111,4 +159,39 @@ void keyboard(unsigned char key, int x, int y) {
   }
 
   glutPostRedisplay();
+}
+
+void runEngine(short int scenario) {
+  /* Cenários e objetos a serem construídos. */
+  switch(scenario) {
+    // case 0:
+    //   buildDesertScenario();
+    //   break;
+
+    case 1:
+      buildUrbanScenario();
+      break;
+
+    // case 2:
+    //   buildFlorestScenario();
+    //   break;
+
+    default:
+      buildUrbanScenario();
+      break;
+  }
+
+  /* Definição dos limites dos objetos (na primeira renderização). */
+  if (firstRender) {
+    createCarBoundary();
+    createObstacleBoundary();
+
+    firstRender = false;
+  }
+
+  /* Renderização do carro. */
+  carGraphicEngine();
+
+  /* Renderização dos obstáculos. */
+  obstaclesGraphicEngine();
 }

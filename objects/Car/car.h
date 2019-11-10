@@ -6,6 +6,6 @@
 
 #include "../../utils/Color/color.h"
 
-void buildCar(Color color, float posX);
+void buildCar(Color color, float posX, float posZ);
 
 #endif

@@ -77,16 +77,3 @@ Color darkGrey() {
 Color lightOrange() {
   return construtor(255, 204, 153);
 }
-
-Color random() {
-  int red, green, blue;
-  time_t seed;
-
-  srand((unsigned) time(&seed));
-
-  red = rand() % 256;
-  green = rand() % 256;
-  blue = rand() % 256;
-
-  return construtor(red, green, blue);
-}

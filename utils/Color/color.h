@@ -2,7 +2,6 @@
 #define COLOR_H
 
 #include <stdlib.h>
-#include <time.h>
 
 /**
  * @author Douglas Canevarollo
@@ -45,7 +44,5 @@ Color sand();
 Color darkGrey();
 
 Color lightOrange();
-
-Color random();
 
 #endif

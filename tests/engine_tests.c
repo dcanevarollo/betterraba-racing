@@ -1,7 +1,13 @@
 /**
- * @author Rafael Campos
- * Aqui deverão ser realizados os testes dos cenários desenvolvidos.
+ * @author Douglas Canevarollo
+ * Teste de motor gráfico.
  */
+
+
+#define URBAN 0
+//#define DESERT 1
+//#define FLOREST 2
+
 
 #include <stdlib.h>
 #include <GL/freeglut.h>
@@ -13,7 +19,6 @@
  * #include "../scenarios/Urban/urban.h"
  */
 #include "../engine/engine.h"
-#include "../scenarios/Urban/urban.h"
 
 
 void display();
@@ -49,14 +54,7 @@ void display() {
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  /* Cenários e objetos a serem construídos. */  
-  buildUrbanScenario();
-
-  /* Renderização do carro. */
-  carGraphicEngine();
-
-  /* Renderização dos obstáculos. */
-  obstaclesGraphicEngine();
+  runEngine(URBAN);
 
   glutSwapBuffers();
 }
@@ -68,7 +66,7 @@ int main(int argc, char **argv) {
 
   glutInitWindowSize(800, 600);
   glutInitWindowPosition(0, 0);
-  glutCreateWindow("Test");
+  glutCreateWindow("BETA test");
 
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
