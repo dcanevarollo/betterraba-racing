@@ -1,4 +1,4 @@
-#include "desert_scenario.h"
+#include "desert.h"
 
 /**
  * @author Rafael Campos
@@ -41,17 +41,17 @@ void buildDesertFloor() {
         glColor3ub(desertFloorColor.red, desertFloorColor.green, desertFloorColor.blue);
 
         glBegin(GL_QUADS);
-            glVertex3f(10, 0, -100);
-            glVertex3f(10, 0, 100);
-            glVertex3f(40, 0, 100);
-            glVertex3f(40, 0, -100);
+            glVertex3f(10, 0, -500);
+            glVertex3f(10, 0, 150);
+            glVertex3f(100, 0, 150);
+            glVertex3f(100, 0, -500);
         glEnd();
 
         glBegin(GL_QUADS);
-            glVertex3f(-10, 0, -100);
-            glVertex3f(-10, 0, 100);
-            glVertex3f(-40, 0, 100);
-            glVertex3f(-40, 0, -100);
+            glVertex3f(-10, 0, -500);
+            glVertex3f(-10, 0, 150);
+            glVertex3f(-100, 0, 150);
+            glVertex3f(-100, 0, -500);
         glEnd();
 
     glPopMatrix();

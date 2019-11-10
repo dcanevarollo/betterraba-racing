@@ -7,7 +7,7 @@
 #include <GL/freeglut.h>
 
 #include "../scenarios/Urban/urban.h"
-#include "../scenarios/Desert/desert_scenario.h"
+#include "../scenarios/Desert/desert.h"
 #include "../utils/Boundary/boundary.h"
 #include "../objects/Car/car.h"
 #include "../objects/Obstacles/obstacles.h"
