@@ -13,7 +13,7 @@
 /**
  * Cria uma caixa marrom.
  */
-void buildBox() {
+void buildBox(float posX, float posZ) {
   glPushMatrix();
 
   Color boxColor = brown();
@@ -27,8 +27,13 @@ void buildBox() {
 
 /**
  * Cria um cone de trânsito.
+ * 
+ * @param posX  : posição no eixo X em que o cone será criado.
+ * @param posZ  : posição no eixo Z em que o cone será criado.
  */
-void buildTrafficCone() {
+void buildTrafficCone(float posX, float posZ) {
+  glTranslatef(posX, 0, -posZ);
+
   glPushMatrix();
 
   Color coneColor = orange();
@@ -43,7 +48,7 @@ void buildTrafficCone() {
 /**
  * Cria uma pedra (apenas uma esfera cinza).
  */
-void buildStone() {
+void buildStone(float posX, float posZ) {
   glPushMatrix();
 
   Color stoneColor = grey();
@@ -59,8 +64,6 @@ void buildStone() {
 /**
  * Cria um carro de cor aleatória como obstáculo.
  */
-void buildRandomCar() {
-  Color randomColor = random();
-
-  buildCar(randomColor);
+void buildRandomCar(float posX, float posZ) {
+  buildCar(red(), 0);
 }
