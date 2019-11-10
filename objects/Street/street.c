@@ -16,10 +16,10 @@ void buildStreet() {
         glColor3ub(streetColor.red, streetColor.green, streetColor.blue);
         glBegin(GL_POLYGON);         
         
-            glVertex3f(10, 0, -150);
+            glVertex3f(10, 0, -500);
             glVertex3f(10, 0, 150);
             glVertex3f(-10, 0, 150);
-            glVertex3f(-10, 0, -150);
+            glVertex3f(-10, 0, -500);
         
             
         glEnd();
@@ -29,8 +29,8 @@ void buildStreet() {
         glColor3ub(lineColor.red, lineColor.green, lineColor.blue);
         glBegin(GL_QUADS);         
         
-            glVertex3f(3.6, 0, -150);
-            glVertex3f(3.8, 0, -150);
+            glVertex3f(3.6, 0, -500);
+            glVertex3f(3.8, 0, -500);
             glVertex3f(3.8, 0, 150);
             glVertex3f(3.6, 0, 150);
         
@@ -39,8 +39,8 @@ void buildStreet() {
         
         glBegin(GL_QUADS);         
         
-            glVertex3f(-3.6, 0, -150);
-            glVertex3f(-3.8, 0, -150);
+            glVertex3f(-3.6, 0, -500);
+            glVertex3f(-3.8, 0, -500);
             glVertex3f(-3.8, 0, 150);
             glVertex3f(-3.6, 0, 150);
         

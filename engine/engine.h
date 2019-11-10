@@ -4,4 +4,6 @@
 #include <stdlib.h>
 #include <GL/freeglut.h>
 
+void createObstacles();
+
 #endif
