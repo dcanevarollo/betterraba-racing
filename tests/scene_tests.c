@@ -43,7 +43,7 @@ void display() {
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(45, 1, 1, 150);
+  gluPerspective(45, 1, 1, 500);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -59,10 +59,8 @@ void display() {
   buildUrbanScenario();
 
   /* Renderização do carro. */
-  glTranslatef(0, 1, 20);  // Posiciona o carro na faixa central.
-  glRotatef(90, 0, 1, 0);  // Coloca o carro virado para frente.
-  Color carColor = blue();
-  buildCar(carColor);
+  buildCar(blue(), 0);
+  buildTrafficCone();
 
   glutSwapBuffers();
 }

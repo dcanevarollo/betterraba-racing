@@ -13,45 +13,60 @@
 /**
  * Cria uma caixa marrom.
  */
-void buildBox() {
+void buildBox(float posX, float posZ) {
   glPushMatrix();
+    glTranslatef(posX, 0, -posZ);
 
-  Color boxColor = brown();
-  glColor3ub(boxColor.red, boxColor.green, boxColor.blue);
+    glPushMatrix();
 
-  glTranslatef(0, 1.5, 0);
-  glutSolidCube(CUBE_SIZE);
+    Color boxColor = brown();
+    glColor3ub(boxColor.red, boxColor.green, boxColor.blue);
 
+    glTranslatef(0, 1.5, 0);
+    glutSolidCube(CUBE_SIZE);
+
+    glPopMatrix();
   glPopMatrix();
 }
 
 /**
  * Cria um cone de trânsito.
+ * 
+ * @param posX  : posição no eixo X em que o cone será criado.
+ * @param posZ  : posição no eixo Z em que o cone será criado.
  */
-void buildTrafficCone() {
+void buildTrafficCone(float posX, float posZ) {
   glPushMatrix();
+    glTranslatef(posX, 0, -posZ);
 
-  Color coneColor = orange();
-  glColor3ub(coneColor.red, coneColor.green, coneColor.blue);
+    glPushMatrix();
 
-  glRotatef(-90.0, 1.0, 0, 0);
-  glutSolidCone(CONE_BASE, CONE_HEIGHT, 50, 1);
+    Color coneColor = orange();
+    glColor3ub(coneColor.red, coneColor.green, coneColor.blue);
 
+    glRotatef(-90.0, 1.0, 0, 0);
+    glutSolidCone(CONE_BASE, CONE_HEIGHT, 50, 1);
+
+    glPopMatrix();
   glPopMatrix();
 }
 
 /**
  * Cria uma pedra (apenas uma esfera cinza).
  */
-void buildStone() {
+void buildStone(float posX, float posZ) {
   glPushMatrix();
+    glTranslatef(posX, 0, -posZ);
 
-  Color stoneColor = grey();
-  glColor3ub(stoneColor.red, stoneColor.green, stoneColor.blue);
+    glPushMatrix();
 
-  glTranslatef(0, SPHERE_RADIUS, 0);
-  glutSolidSphere(SPHERE_RADIUS, 40, 25);
+    Color stoneColor = darkGrey();
+    glColor3ub(stoneColor.red, stoneColor.green, stoneColor.blue);
 
+    glTranslatef(0, SPHERE_RADIUS, 0);
+    glutSolidSphere(SPHERE_RADIUS, 40, 25);
+
+    glPopMatrix();
   glPopMatrix();
 }
 
@@ -59,8 +74,10 @@ void buildStone() {
 /**
  * Cria um carro de cor aleatória como obstáculo.
  */
-void buildRandomCar() {
-  Color randomColor = random();
+void buildRandomCar(float posX, float posZ) {
+  glPushMatrix();
 
-  buildCar(randomColor);
+  buildCar(red(), posX, posZ);
+
+  glPopMatrix();
 }

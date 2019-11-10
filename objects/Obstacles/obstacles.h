@@ -5,12 +5,12 @@
 #include "../../utils/Color/color.h"
 #include "../Car/car.h"
 
-void buildBox();
+void buildBox(float posX, float posZ);
 
-void buildTrafficCone();
+void buildTrafficCone(float posX, float posZ);
 
-void buildStone();
+void buildStone(float posX, float posZ);
 
-void buildRandomCar();
+void buildRandomCar(float posX, float posZ);
 
 #endif

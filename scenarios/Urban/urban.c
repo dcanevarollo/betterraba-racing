@@ -19,19 +19,19 @@ void buildUrbanScenario() {
   
   glBegin(GL_QUADS);
 
-  glVertex3f(STREET_EDGE, 0, -100);
-  glVertex3f(STREET_EDGE, 0, 100);
-  glVertex3f(40, 0, 100);
-  glVertex3f(40, 0, -100);
+  glVertex3f(STREET_EDGE, 0, -500);
+  glVertex3f(STREET_EDGE, 0, 150);
+  glVertex3f(40, 0, 150);
+  glVertex3f(40, 0, -500);
 
   glEnd();
 
   glBegin(GL_QUADS);
 
-  glVertex3f(-STREET_EDGE, 0, -100);
-  glVertex3f(-STREET_EDGE, 0, 100);
-  glVertex3f(-40, 0, 100);
-  glVertex3f(-40, 0, -100);
+  glVertex3f(-STREET_EDGE, 0, -500);
+  glVertex3f(-STREET_EDGE, 0, 150);
+  glVertex3f(-40, 0, 150);
+  glVertex3f(-40, 0, -500);
 
   glEnd();
 
@@ -39,12 +39,19 @@ void buildUrbanScenario() {
   glTranslatef(0, 0, 0);
 
   /* Cria os prédios decorativos. */
-  positionBulding(true, 0, grey(), 2, 6);
-  positionBulding(false, 5, yellow(), 2, 7);
-  positionBulding(true, 15, lightOrange(), 4, 6);
-  positionBulding(false, 20, grey(), 3, 6);
-  positionBulding(true, 30, beige(), 4, 7);
-  positionBulding(false, 35, lightOrange(), 4, 6);
+  positionBulding(true, 5, grey(), 2, 6);
+  positionBulding(false, 10, yellow(), 2, 7);
+  positionBulding(true, 25, lightOrange(), 4, 6);
+  positionBulding(false, 35, grey(), 3, 6);
+  positionBulding(true, 50, purple(), 4, 7);
+  positionBulding(false, 60, lightOrange(), 2, 6);
+  positionBulding(true, 75, darkGreen(), 2, 6);
+  positionBulding(false, 85, purple(), 4, 7);
+  positionBulding(true, 100, beige(), 4, 6);
+  positionBulding(false, 110, grey(), 3, 6);
+  positionBulding(true, 125, lightOrange(), 2, 7);
+  positionBulding(false, 135, yellow(), 3, 7);
+  positionBulding(true, 150, purple(), 4, 7);
 
   glPopMatrix();
 }

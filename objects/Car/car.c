@@ -4,9 +4,14 @@
  * @author Rafael Campos
  * Função de criação dos objetos que modelam os carros.
  * 
- * @param color   : cor do carro a ser criado. 
+ * @param color   : cor do carro a ser criado.
+ * @param posX    : posição (eixo x) em que o carro será desenhado.
+ * @param posZ    : posição (eixo Z) em que o carro será desenhado.
  */
-void buildCar(Color color) {
+void buildCar(Color color, float posX, float posZ) {
+   glTranslatef(posX, 1, -posZ);  // Posiciona o carro na faixa central.
+   glRotatef(90, 0, 1, 0);  // Coloca o carro virado para frente.
+
    glPushMatrix();
 
    // Rodas
