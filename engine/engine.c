@@ -193,9 +193,9 @@ void runEngine(short int scenario) {
       buildDesertScenario();
       break;
 
-    // case 2:
-    //   buildFlorestScenario();
-    //   break;
+    case 2:
+      buildFlorestScenario();
+      break;
 
     default:
       buildUrbanScenario();

@@ -49,7 +49,7 @@ void display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   /* Passe o cenário desejado como parâmetro do motor gráfico. */
-  runEngine(DESERT);
+  runEngine(FLOREST);
 
   glutSwapBuffers();
 }

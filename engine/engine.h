@@ -8,6 +8,7 @@
 
 #include "../scenarios/Urban/urban.h"
 #include "../scenarios/Desert/desert.h"
+#include "../scenarios/Florest/florest.h"
 #include "../utils/Boundary/boundary.h"
 #include "../objects/Car/car.h"
 #include "../objects/Obstacles/obstacles.h"
