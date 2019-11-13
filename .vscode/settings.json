@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "obstacles.h": "c",
-    "urban.h": "c"
+    "urban.h": "c",
+    "car.h": "c"
   }
 }

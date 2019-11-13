@@ -28,10 +28,14 @@ Boundary obstaclesBoundaries[6];  // Uma posição para cada obstáculo renderiz
 
 /* Variáveis de controle. */
 bool firstRender = true;  // Define a primeira renderização para controle dos boundaries.
-bool carAnimationEnabled = false;
-int currentLane = MIDDLE_LANE;
-int animationSide;
-int nextLane;
+bool shouldRenderScenario = true;  // Define se é necessário renderizar um novo pedaço do cenário.
+bool carAnimationEnabled = false;  // Ativa a animação do carrinho (para troca de faixas).
+
+int currentLane = MIDDLE_LANE;  // Faixa atual que o carro está.
+int animationSide;  // Lado em que o carro ia se movimentar.
+int nextLane;  // Próxima pista (na movimentação do carrinho).
+
+float scenarioPos = 0;
 
 
 /**
@@ -183,6 +187,11 @@ void keyboard(unsigned char key, int x, int y) {
  * @param scenario  : define qual cenário será renderizado.
  */
 void runEngine(short int scenario) {
+  glPushMatrix();
+
+  glTranslatef(0, 0, scenarioPos);
+  scenarioPos += 0.1;
+
   /* Cenários e objetos a serem construídos. */
   switch(scenario) {
     case 0:
@@ -202,6 +211,9 @@ void runEngine(short int scenario) {
       break;
   }
 
+  shouldRenderScenario = false;
+
+
   /* Definição dos limites dos objetos (na primeira renderização). */
   if (firstRender) {
     createCarBoundary();
@@ -210,9 +222,13 @@ void runEngine(short int scenario) {
     firstRender = false;
   }
 
+  /* Renderização dos obstáculos. */
+  obstaclesGraphicEngine();
+
+  glPopMatrix();
+
   /* Renderização do carro. */
   carGraphicEngine();
 
-  /* Renderização dos obstáculos. */
-  obstaclesGraphicEngine();
+  glutPostRedisplay();
 }

@@ -6,7 +6,7 @@
 
 #define URBAN 0
 #define DESERT 1
-//#define FLOREST 2
+#define FLOREST 2
 
 
 #include <stdlib.h>
