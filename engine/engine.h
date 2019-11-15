@@ -3,12 +3,13 @@
 
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
 #include <GL/freeglut.h>
 
-#include "../scenarios/Urban/urban.h"
-#include "../scenarios/Desert/desert.h"
+#include "../utils/Queue/queue.h"
 #include "../utils/Boundary/boundary.h"
+#include "../scenarios/Urban/urban.h"
 #include "../objects/Car/car.h"
 #include "../objects/Obstacles/obstacles.h"
 

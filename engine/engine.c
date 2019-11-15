@@ -6,9 +6,6 @@
 
 #include "engine.h"
 
-#define bool char
-#define true 1
-#define false 0
 
 #define INIT_POS -20  // Negativo pois a função de translação para os carros inverte o sinal.
 
@@ -27,8 +24,9 @@ Boundary carBoundary;
 Boundary obstaclesBoundaries[6];  // Uma posição para cada obstáculo renderizado.
 
 /* Variáveis de controle. */
+bool paused = true;  // Utilizada para pausar o jogo.
 bool firstRender = true;  // Define a primeira renderização para controle dos boundaries.
-bool shouldRenderScenario = true;  // Define se é necessário renderizar um novo pedaço do cenário.
+bool shouldRenderNewScenario = false;  // Define se um novo cenário deve ser construído a frente.
 bool carAnimationEnabled = false;  // Ativa a animação do carrinho (para troca de faixas).
 
 int currentLane = MIDDLE_LANE;  // Faixa atual que o carro está.
@@ -169,6 +167,10 @@ void keyboard(unsigned char key, int x, int y) {
       }
       break;
 
+    case 'p':
+      paused = !paused;
+      break;
+
     case 'q':
       glutExit();
       exit(0);
@@ -182,38 +184,38 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 /**
- * Função que executa o motor gráfico.
+ * Cria o cenário de acordo com a escolha do jogador.
  * 
  * @param scenario  : define qual cenário será renderizado.
  */
-void runEngine(short int scenario) {
-  glPushMatrix();
-
-  glTranslatef(0, 0, scenarioPos);
-  scenarioPos += 0.1;
-
-  /* Cenários e objetos a serem construídos. */
+void buildScenario(short int scenario) {
   switch(scenario) {
     case 0:
       buildUrbanScenario();
       break;
 
-    case 1:
-      buildDesertScenario();
-      break;
+    // case 1:
+    //   buildDesertScenario();
+    //   break;
 
     // case 2:
     //   buildFlorestScenario();
     //   break;
 
     default:
-      buildUrbanScenario();
+      printf("Erro na inicialização do cenário\n\n");
+      glutExit();
+      exit(1);
       break;
   }
+}
 
-  shouldRenderScenario = false;
-
-
+/**
+ * Função que executa o motor gráfico.
+ * 
+ * @param scenario  : define qual cenário será renderizado (recebido do arquivo main.c).
+ */
+void runEngine(short int scenario) {
   /* Definição dos limites dos objetos (na primeira renderização). */
   if (firstRender) {
     createCarBoundary();
@@ -222,13 +224,33 @@ void runEngine(short int scenario) {
     firstRender = false;
   }
 
-  /* Renderização dos obstáculos. */
+  glPushMatrix();
+
+  glTranslatef(0, 0, scenarioPos);
+  scenarioPos += 0.1;
+
+  shouldRenderNewScenario = scenarioPos >= 200 ? true : false;
+
+  /* Cenários e objetos a serem construídos. */
+  buildScenario(scenario);
+
+  /* Renderização dos obstáculos do cenário. */
   obstaclesGraphicEngine();
+
+  if (shouldRenderNewScenario) {
+    glPushMatrix();
+
+    glTranslatef(0, 0, -300);
+    buildScenario(scenario);
+
+    glPopMatrix();
+  }
 
   glPopMatrix();
 
-  /* Renderização do carro. */
+  /* Renderização do carro ("fixo"). */
   carGraphicEngine();
 
-  glutPostRedisplay();
+  if (!paused)
+    glutPostRedisplay();
 }

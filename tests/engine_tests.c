@@ -4,14 +4,10 @@
  */
 
 
-#define URBAN 0
-#define DESERT 1
-#define FLOREST 2
-
-
 #include <stdlib.h>
 #include <GL/freeglut.h>
 
+#include "../utils/Defines/defines.h"
 #include "../engine/engine.h"
 
 
@@ -49,7 +45,7 @@ void display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   /* Passe o cenário desejado como parâmetro do motor gráfico. */
-  runEngine(DESERT);
+  runEngine(URBAN);
 
   glutSwapBuffers();
 }
