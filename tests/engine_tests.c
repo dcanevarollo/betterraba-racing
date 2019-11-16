@@ -4,6 +4,11 @@
  */
 
 
+#define URBAN 0
+#define DESERT 1
+#define FLOREST 2
+
+
 #include <stdlib.h>
 #include <GL/freeglut.h>
 

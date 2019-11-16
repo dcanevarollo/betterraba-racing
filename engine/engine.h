@@ -9,6 +9,8 @@
 
 #include "../utils/Properties/properties.h"
 #include "../scenarios/Urban/urban.h"
+#include "../scenarios/Desert/desert.h"
+#include "../scenarios/Florest/florest.h"
 #include "../objects/Car/car.h"
 #include "../objects/Obstacles/obstacles.h"
 

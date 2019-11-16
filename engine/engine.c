@@ -239,9 +239,9 @@ void renderScenario(short int scenario) {
     //   buildDesertScenario();
     //   break;
 
-    // case 2:
-    //   buildFlorestScenario();
-    //   break;
+    case 2:
+      buildFlorestScenario();
+      break;
 
     default:
       printf("Erro na inicializacao do cenario.\n\n");
