@@ -12,16 +12,11 @@
 #include <stdlib.h>
 #include <GL/freeglut.h>
 
+#include "../utils/Defines/defines.h"
 #include "../engine/engine.h"
 
 
 void display();
-
-
-/* Variáveis de controle da câmera. */
-int camPosX = 0, camPosY = 20, camPosZ = 70;
-int camLookX = 0, camLookY = 10, camLookZ = 0;
-int camAxisX = 0, camAxisY = 1, camAxisZ = 0;
 
 
 /**
@@ -37,19 +32,8 @@ void display() {
   /* Define a cor de fundo (o "céu"). */
   glClearColor(204.0f/255.0f, 229.0f/255.0f,  1.0f, 1.0f);
 
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(45, 1, 1, 500);
-
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-
-  gluLookAt(camPosX, camPosY, camPosZ, camLookX, camLookY, camLookZ, camAxisX, camAxisY, camAxisZ);
-
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
   /* Passe o cenário desejado como parâmetro do motor gráfico. */
-  runEngine(FLOREST);
+  runEngine(URBAN);
 
   glutSwapBuffers();
 }

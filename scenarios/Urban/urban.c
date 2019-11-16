@@ -1,6 +1,13 @@
 #include "urban.h"
+#include <stdio.h>
+
 
 #define STREET_EDGE 10
+
+
+void positionBulding(bool leftSidewalk, float distance, Color color, float heightScale, float size);
+void createAllBuildings();
+
 
 /**
  * @author Douglas Canevarollo
@@ -35,23 +42,8 @@ void buildUrbanScenario() {
 
   glEnd();
 
-  /* Retorna o sistema à origem. */
-  glTranslatef(0, 0, 0);
-
   /* Cria os prédios decorativos. */
-  positionBulding(true, 5, grey(), 2, 6);
-  positionBulding(false, 10, yellow(), 2, 7);
-  positionBulding(true, 25, lightOrange(), 4, 6);
-  positionBulding(false, 35, grey(), 3, 6);
-  positionBulding(true, 50, purple(), 4, 7);
-  positionBulding(false, 60, lightOrange(), 2, 6);
-  positionBulding(true, 75, darkGreen(), 2, 6);
-  positionBulding(false, 85, purple(), 4, 7);
-  positionBulding(true, 100, beige(), 4, 6);
-  positionBulding(false, 110, grey(), 3, 6);
-  positionBulding(true, 125, lightOrange(), 2, 7);
-  positionBulding(false, 135, yellow(), 3, 7);
-  positionBulding(true, 150, purple(), 4, 7);
+  createAllBuildings();
 
   glPopMatrix();
 }
@@ -74,6 +66,43 @@ void positionBulding(bool leftSidewalk, float distance, Color color, float heigh
     glTranslatef(size/2 + STREET_EDGE + 2, 0, -distance);
 
   buildBuilding(color, heightScale, size);
+
+  glPopMatrix();
+}
+
+/**
+ * Cria todos os prédios que aparecerão na tela.
+ */
+void createAllBuildings() {
+  glPushMatrix();
+
+  glTranslatef(0, 0, 0);
+
+  positionBulding(true, 5, grey(), 2, 6);
+  positionBulding(false, 10, yellow(), 2, 7);
+  positionBulding(true, 25, lightOrange(), 4, 6);
+  positionBulding(false, 35, grey(), 3, 6);
+  positionBulding(true, 50, purple(), 4, 7);
+  positionBulding(false, 60, lightOrange(), 2, 6);
+  positionBulding(true, 75, darkGreen(), 2, 6);
+  positionBulding(false, 85, purple(), 4, 7);
+  positionBulding(true, 100, beige(), 4, 6);
+  positionBulding(false, 110, grey(), 3, 6);
+  positionBulding(true, 125, lightOrange(), 2, 7);
+  positionBulding(false, 135, yellow(), 3, 7);
+  positionBulding(true, 150, purple(), 4, 7);
+  positionBulding(false, 160, yellow(), 2, 7);
+  positionBulding(true, 175, lightOrange(), 4, 6);
+  positionBulding(false, 185, grey(), 3, 6);
+  positionBulding(true, 200, purple(), 4, 7);
+  positionBulding(false, 210, lightOrange(), 2, 6);
+  positionBulding(true, 225, darkGreen(), 2, 6);
+  positionBulding(false, 235, purple(), 4, 7);
+  positionBulding(true, 250, beige(), 4, 6);
+  positionBulding(false, 260, grey(), 3, 6);
+  positionBulding(true, 275, lightOrange(), 2, 7);
+  positionBulding(false, 290, yellow(), 3, 7);
+  positionBulding(true, 300, purple(), 4, 7);
 
   glPopMatrix();
 }
