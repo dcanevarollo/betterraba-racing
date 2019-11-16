@@ -9,16 +9,20 @@
 
 /* Protótipos de funções encapsuladas. */
 void configView();
+void toInfiniteAndBeyond(short int scenario);
 void renderObstacles();
 void renderMainCar();
-void renderScenario(short int scenario);
+void renderScenario(short int scenario, float renderizationPos);
 void changeLanes();
 void setCarProperties();
 void setObstaclesProperties();
 
 
 #define VIEW_DISTANCE 500  // Distância de visualização da câmera.
-#define INIT_POS -20  // Negativo pois a função de translação para os carros inverte o sinal.
+#define INIT_POS -150  // Negativo pois a função de translação para os carros inverte o sinal.
+#define SCENE_LIMIT 150  // Limite da cena (a partir de múltiplos deste são renderizados novos objetos).
+#define CLOSE_LIMIT 100  // Limite de aproximação do carro com o horizonte da cena.
+#define SCENE_HORIZON 400  // "Horizonte" imaginário da cena.
 
 /* Constantes de troca de faixas. */
 #define TO_LEFT -1
@@ -32,30 +36,33 @@ void setObstaclesProperties();
 /* Variáveis de controle da câmera e perspectiva. */
 bool perspective = true;
 
-int camPosX = 0, camPosY = 20, camPosZ = 70;
+int camPosX = 0, camPosY = 20, camPosZ = 200;
 int camLookX = 0, camLookY = 10, camLookZ = 0;
 int camAxisX = 0, camAxisY = 1, camAxisZ = 0;
 
 /* Variáveis de manipulação dos objetos do jogo. */
 Properties carProperties;  // Armazena as propriedades do carro principal.
-Properties obstaclesProperties[6];  // Cada posição do vetor armazenará as propriedades de um obstáculo.
+Properties obstaclesProperties[10];  // Cada posição do vetor armazenará as propriedades de um obstáculo.
 
 /* Variáveis de controle. */
 bool paused = true;  // Utilizada para pausar o jogo.
 bool firstRender = true;  // Define a primeira renderização para controle dos boundaries.
-bool shouldRenderObjects = true;  // Define se o cenário e os obstáculos devem ser construídos.
+bool needNewScenario = false;  // Define se é necessário a renderização de um novo cenário a frente.
+bool refreshScene = true;  // Define se novos obstáculos devem ser criados na tela.
 bool carAnimationEnabled = false;  // Ativa a animação do carrinho (para troca de faixas).
 
 int currentLane = MIDDLE_LANE;  // Faixa atual que o carro está.
 int animationSide;  // Lado em que o carro ia se movimentar.
 int nextLane;  // Próxima pista (na movimentação do carrinho).
 
-float currentPosition = 0;  // Posição atual do carro no jogo.
+float currentPosition = INIT_POS;  // Posição atual do carro no jogo.
+float renderizationPosition = 0;  // Posição de renderização do cenário e objetos.
+float newRenderizationPosition;  // Posição de renderização do novo cenário (impressão de "ambiente infinito").
 
 
 /**
- * Trata a renderização dos obstáculos na pista. A distância em z e a faixa que aparecerão serão aleatórios. Cada limite
- * para cada obstáculo é uma posição do vetor de limites.
+ * Trata a renderização dos obstáculos na pista. A distância em z e a faixa que aparecerão serão aleatórios. Cada pro-
+ * priedade para cada obstáculo é uma posição do vetor de propriedades.
  */
 void renderObstacles() {
   glPushMatrix();
@@ -66,6 +73,10 @@ void renderObstacles() {
   buildTrafficCone(obstaclesProperties[3].lane, obstaclesProperties[3].distance);
   buildRandomCar(obstaclesProperties[4].lane, obstaclesProperties[4].distance);
   buildStone(obstaclesProperties[5].lane, obstaclesProperties[5].distance);
+  buildTrafficCone(obstaclesProperties[6].lane, obstaclesProperties[6].distance);
+  buildStone(obstaclesProperties[7].lane, obstaclesProperties[7].distance);
+  buildBox(obstaclesProperties[8].lane, obstaclesProperties[8].distance);
+  buildTrafficCone(obstaclesProperties[9].lane, obstaclesProperties[9].distance);
 
   glPopMatrix();
 }
@@ -134,11 +145,11 @@ void setObstaclesProperties() {
 
   srand((unsigned) time(&seed));
 
-  for (i = 0; i < 6; i++) {
+  for (i = 0; i < 10; i++) {
     lane = rand() % 3;
     distance = rand() % 30 + i * 50;  // Os objetos ficarão mais distantes de acordo com sua posição i do vetor.
 
-    switch(lane) {
+    switch (lane) {
       case 0:
         lane = LEFT_LANE;
         break;
@@ -198,9 +209,11 @@ void keyboard(unsigned char key, int x, int y) {
       if (perspective) {
         camPosX = 0;
         camPosY = 20;
+        camPosZ = 200;
       } else {
-        camPosX = 5;
+        camPosX = 3;
         camPosY = 30;
+        camPosZ = 100;
       }
 
       break;
@@ -217,43 +230,6 @@ void keyboard(unsigned char key, int x, int y) {
   }
 
   glutPostRedisplay();
-}
-
-/**
- * Cria o cenário de acordo com a escolha do jogador.
- * 
- * @param scenario  : define qual cenário será renderizado.
- */
-void renderScenario(short int scenario) {
-  glPushMatrix();
-
-  glTranslatef(0, 0, currentPosition);
-  currentPosition += 0.1;
-
-  switch(scenario) {
-    case 0:
-      buildUrbanScenario();
-      break;
-
-    // case 1:
-    //   buildDesertScenario();
-    //   break;
-
-    case 2:
-      buildFlorestScenario();
-      break;
-
-    default:
-      printf("Erro na inicializacao do cenario.\n\n");
-      glutExit();
-      exit(1);
-      break;
-  }
-
-  /* Renderização dos obstáculos do cenário. */
-  renderObstacles();
-
-  glPopMatrix();
 }
 
 /**
@@ -278,6 +254,96 @@ void configView() {
 }
 
 /**
+ * Cria o cenário de acordo com a escolha do jogador.
+ * 
+ * @param scenario          : define qual cenário será renderizado.
+ * @param renderizationPos  : indica a posição em que a matriz do cenário será renderizada.
+ */
+void renderScenario(short int scenario, float renderizationPos) {
+  /* Define as propriedades dos obstáculos a serem criados. */
+  if (refreshScene) {
+    setObstaclesProperties();
+
+    refreshScene = false;
+  }
+
+  glPushMatrix();
+
+  glTranslatef(0, 0, renderizationPos);
+
+  switch (scenario) {
+    case 0:
+      buildUrbanScenario();
+      break;
+
+    // case 1:
+    //   buildDesertScenario();
+    //   break;
+
+    // case 2:
+    //   buildFlorestScenario();
+    //   break;
+
+    default:
+      printf("Erro na inicializacao do cenario.\n\n");
+      glutExit();
+      exit(1);
+      break;
+  }
+
+  /* Renderização dos obstáculos do cenário. */
+  renderObstacles();
+
+  glPopMatrix();
+}
+
+/**
+ * Trata a renderização infinita do cenário e dos obstáculos.
+ * Nome meramente ilustrativo.
+ * 
+ * @param scenario  : cenário a ser renderizado.
+ */
+void toInfiniteAndBeyond(short int scenario) {
+  /* Renderiza o cenário na posição atual e a incrementa. */
+  renderScenario(scenario, renderizationPosition);
+  renderizationPosition += 0.1;
+
+  /* Se um novo cenário é necessário, renderiza-o na nova posição de renderização e a incrementa. */
+  if (needNewScenario) {
+    renderScenario(scenario, newRenderizationPosition);
+    newRenderizationPosition += 0.1;
+  }
+
+  /* Incrementa a posição do carro para comparar a distância do carro ao horizonte da pista. */
+  currentPosition += 0.1;
+
+  float distanceToHorizon = SCENE_HORIZON - currentPosition;
+
+  /* Se a distância atingiu seu limite, um novo cenário deve ser renderizado a frente. A nova posição de renderização, 
+  no caso, será a distância para o horizonte mais um espaço de segurança, que chamaremos de limite de fechamento (ou 
+  close limit). */
+  if (distanceToHorizon <= SCENE_LIMIT) {
+    /* Se é a primeira vez que essa condição será adentrada, a variável de controle needNewScenario terá valor falso.
+    Nesse caso, setamos ela e a variável de refresh de obstáculos para verdadeiro. */
+    if (!needNewScenario) {
+      needNewScenario = true;
+      refreshScene = true;
+    }
+    
+    newRenderizationPosition = -distanceToHorizon + CLOSE_LIMIT;
+  }
+  
+  /* Se a distância para o horizonte ultrapassou o oposto do limite de fechamento, significa que não é mais necessário
+  renderizar o "antigo" cenário. Neste caso, a posição de renderização atual torna-se a nova posição e a posição do
+  carro é resetada. */
+  if (distanceToHorizon < -CLOSE_LIMIT) {
+    renderizationPosition = newRenderizationPosition;
+    needNewScenario = false;
+    currentPosition = 0;
+  }
+}
+
+/**
  * Função que executa o motor gráfico.
  * 
  * @param scenario  : define qual cenário será renderizado (recebido do arquivo main.c).
@@ -285,16 +351,15 @@ void configView() {
 void runEngine(short int scenario) {
   configView();
 
-  /* Definição dos limites dos objetos (na primeira renderização). */
+  /* Definição das propriedades do carro (apenas na primeira renderização). */
   if (firstRender) {
     setCarProperties();
-    setObstaclesProperties();
 
     firstRender = false;
   }
 
   /* Cenários e objetos a serem construídos. */
-  renderScenario(scenario);
+  toInfiniteAndBeyond(scenario);
 
   /* Renderização do carro ("fixo"). */
   renderMainCar();
