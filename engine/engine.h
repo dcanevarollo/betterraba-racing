@@ -7,6 +7,7 @@
 #include <time.h>
 #include <GL/freeglut.h>
 
+#include "../utils/Defines/defines.h"
 #include "../utils/Properties/properties.h"
 #include "../scenarios/Urban/urban.h"
 #include "../scenarios/Desert/desert.h"
