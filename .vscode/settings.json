@@ -6,10 +6,7 @@
     "building.h": "c",
     "engine.h": "c",
     "queue.h": "c",
-    "properties.h\u0000erties.h": "c",
-    "properties.h\u0000operties.h": "c",
-    "properties.h\u0000perties.h": "c",
-    "properties.h\u0000properties.h": "c",
-    "properties.h\u0000rties.h": "c"
+    "properties.h": "c",
+    "defines.h": "c",
   }
 }

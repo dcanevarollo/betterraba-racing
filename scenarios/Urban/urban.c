@@ -98,11 +98,14 @@ void createAllBuildings() {
   positionBulding(false, 210, lightOrange(), 2, 6);
   positionBulding(true, 225, darkGreen(), 2, 6);
   positionBulding(false, 235, purple(), 4, 7);
-  positionBulding(true, 250, beige(), 4, 6);
-  positionBulding(false, 260, grey(), 3, 6);
-  positionBulding(true, 275, lightOrange(), 2, 7);
-  positionBulding(false, 290, yellow(), 3, 7);
+  positionBulding(true, 250, beige(), 4, 7);
+  positionBulding(false, 260, yellow(), 2, 7);
+  positionBulding(true, 275, lightOrange(), 4, 6);
+  positionBulding(false, 285, grey(), 3, 6);
   positionBulding(true, 300, purple(), 4, 7);
+  positionBulding(false, 210, lightOrange(), 2, 6);
+  positionBulding(true, 325, darkGreen(), 2, 6);
+  positionBulding(false, 335, purple(), 4, 7);
 
   glPopMatrix();
 }
