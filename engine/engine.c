@@ -62,7 +62,7 @@ float scenarioRendPosition = 0;  // Posição de renderização do cenário.
 float newScenarioRendPosition;  // Posição de renderização do novo cenário (impressão de "ambiente infinito").
 float obstaclesRendPosition = 0;  // Posição de renderização dos obstáculos.
 float lastObstacleRendPosition;  // Posição do último obstáculo renderizado.
-float difficulty = 5;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
+float difficulty = 0;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
 
 
 /**
@@ -73,7 +73,7 @@ float difficulty = 5;  // Dificuldade do jogo. Incrementada a cada superação d
  * @param side  : indica para qual lado será a troca. Se esquerda, side == -1, se direita, side == 1.
  */
 void changeLanes(int side) {
-  carProperties.lane += side * 0.1;
+  carProperties.lane += side * 0.5;
 
   if (side == TO_RIGHT) {
     nextLane = currentLane == MIDDLE_LANE ? RIGHT_LANE : MIDDLE_LANE;
@@ -232,7 +232,7 @@ void renderMainCar() {
   if (carAnimationEnabled)
     changeLanes(animationSide);
 
-  buildCar(red(), carProperties.lane, carProperties.distance);
+  buildCar(blue(), carProperties.lane, carProperties.distance);
 
   glPopMatrix();
 }
@@ -368,11 +368,9 @@ void keyboard(unsigned char key, int x, int y) {
       perspective = !perspective;
 
       if (perspective) {
-        camPosX = 0;
         camPosY = 20;
         camPosZ = 200;
       } else {
-        camPosX = 3;
         camPosY = 30;
         camPosZ = 100;
       }
