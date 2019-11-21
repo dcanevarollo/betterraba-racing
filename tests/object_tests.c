@@ -14,7 +14,7 @@
  * #include "../objects/Car/car.h"
  */
 // #include "../objects/Building/building.h"
-// #include "../objects/Car/car.h"
+#include "../objects/Car/car.h"
 
 void display();
 void drawProjectionCube();
@@ -61,7 +61,7 @@ void display() {
   /* Insira a função de construção que quer testar aqui. Por exemplo:
   buildCar(); */
   // glTranslatef(-10, 0, 0);
-  // buildCar(green());
+  buildCar(green(), 0, 0);
   // glTranslatef(20, 0, 0);
   // buildBuilding(purple(), 4, 7);
 

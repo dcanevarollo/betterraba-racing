@@ -45,4 +45,6 @@ Color darkGrey();
 
 Color lightOrange();
 
+Color darkRed();
+
 #endif

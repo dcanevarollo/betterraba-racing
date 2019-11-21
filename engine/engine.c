@@ -62,7 +62,7 @@ float scenarioRendPosition = 0;  // Posição de renderização do cenário.
 float newScenarioRendPosition;  // Posição de renderização do novo cenário (impressão de "ambiente infinito").
 float obstaclesRendPosition = 0;  // Posição de renderização dos obstáculos.
 float lastObstacleRendPosition;  // Posição do último obstáculo renderizado.
-float difficulty = 0;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
+float difficulty = 5;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
 
 
 /**
@@ -232,7 +232,7 @@ void renderMainCar() {
   if (carAnimationEnabled)
     changeLanes(animationSide);
 
-  buildCar(blue(), carProperties.lane, carProperties.distance);
+  buildCar(red(), carProperties.lane, carProperties.distance);
 
   glPopMatrix();
 }

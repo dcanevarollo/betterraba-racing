@@ -14,6 +14,8 @@ void buildCar(Color color, float posX, float posZ) {
 
    glPushMatrix();
 
+   Color lightColor = darkRed();
+
    // Rodas
    Color wheelColor = black();
 
@@ -57,5 +59,26 @@ void buildCar(Color color, float posX, float posZ) {
    glColor3ub(20, 20, 20);
    glutSolidCube(0.1);
 
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-4.8, 2, 2.3);
+      glColor3ub(lightColor.red, lightColor.green, lightColor.blue);
+      glScalef(1, 1, 1);
+      glutSolidSphere(0.5, 50, 50);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-4.8, 2, -2.3);
+      glColor3ub(lightColor.red, lightColor.green, lightColor.blue);
+      glScalef(1, 1, 1);
+      glutSolidSphere(0.5, 50, 50);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-3.6, 4, 0);
+      glScalef(0, 3.5, 7);
+      glColor3ub(20, 20, 20);
+      glutSolidCube(0.8);
    glPopMatrix();
 }
