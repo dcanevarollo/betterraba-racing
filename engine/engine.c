@@ -13,7 +13,7 @@ void renderObstacles();
 void renderMainCar();
 void setObstaclesProperties();
 void setCarProperties();
-void configView()
+void configView();
 void colisao();
 void setPositionElements();
 
@@ -238,13 +238,16 @@ void toInfiniteAndBeyond(short int scenario)
   float distanceToLastObstacle = lastObstacleRendPosition - currentPositionObstacles + SAFE_LIMIT;
 
   /* A dificuldade aumentará a cada onda de obstáculos superados. */
-  if (distanceToLastObstacle <= 0)
-  {
-    difficulty += 0.08;
+  if (distanceToLastObstacle <= 0) {
+    
+    if(difficulty < 1.36)
+      difficulty += 0.08;
+    
     refreshScene = true;
     currentPositionObstacles = 0;
   }
-  
+  printf("%2f\n", difficulty);
+
   renderObstacles();
 }
 
@@ -429,32 +432,29 @@ void configView()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-/**
- * Função que executa o motor gráfico.
- * 
- * @param scenario  : define qual cenário será renderizado (recebido do arquivo main.c).
- */
+void gameOver() {
+  paused = true;
+  renderText(-20, 130, "SE FODEU");
+}
+
+
 void colisao(){
   for(int i=0; i<10; i++){                                                                              
     if(obstaclesProperties[i].collisionZ[0] < -130 && obstaclesProperties[i].collisionZ[0] > -158){     
+      
       controle_colisao = i;
-      printf("Objeto %d Posicao: %f\n", controle_colisao, obstaclesProperties[i].collisionZ[0]);
-      if(obstaclesProperties[controle_colisao].lane == LEFT_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1]){
-        printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[0], obstaclesProperties[controle_colisao].collisionX[1]);
-        paused = true;
-      }  
-      if(obstaclesProperties[controle_colisao].lane == RIGHT_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0]){ 
-        printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[1], obstaclesProperties[controle_colisao].collisionX[0]);
-        paused = true;
-      }  
-      if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1] && carProperties.lane >= 0){ // indo para a direita
-        printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[0], obstaclesProperties[controle_colisao].collisionX[1]);
-        paused = true;
-      }  
-      if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0] && carProperties.lane < 0){
-        printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[1], obstaclesProperties[controle_colisao].collisionX[0]);
-        paused = true; 
-      }
+
+      if(obstaclesProperties[controle_colisao].lane == LEFT_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1])
+        gameOver();
+
+      if(obstaclesProperties[controle_colisao].lane == RIGHT_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0])
+        gameOver();
+
+      if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1] && carProperties.lane >= 0)// indo para a direita
+        gameOver();
+
+      if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0] && carProperties.lane < 0)
+        gameOver();
     }
   }
 }
