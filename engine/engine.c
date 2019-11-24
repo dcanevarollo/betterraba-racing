@@ -99,6 +99,33 @@ void changeLanes(int side)
   glutPostRedisplay();
 }
 
+/* reverse:  reverse string s in place */
+ void reverse(char s[]) {
+     int i, j;
+     char c;
+
+     for (i = 0, j = strlen(s)-1; i<j; i++, j--) {
+         c = s[i];
+         s[i] = s[j];
+         s[j] = c;
+     }
+}
+
+void intToString(int n, char s[]) {
+    int i, sign;
+
+    if ((sign = n) < 0)  
+        n = -n;          
+    i = 0;
+    do {       
+        s[i++] = n % 10 + '0';   
+    } while ((n /= 10) > 0);     
+    if (sign < 0)
+        s[i++] = '-';
+    s[i] = '\0';
+    reverse(s);
+}   
+
 void savePoints()
 {
   FILE *file;
@@ -112,7 +139,9 @@ void savePoints()
     if (c == '\n') // Increment count if this character is newline
       numberOfLines = numberOfLines + 1;
 
-  fprintf(file , "%s ; %s\n", userName, itoa(points, string, 10));
+  intToString(points, string);
+
+  fprintf(file , "%s ; %s\n", userName, string);
 
   fclose(file);
 }
@@ -145,7 +174,9 @@ void renderPoints()
 
   points++;
 
-  renderText(3, 80, itoa(points, string, 10));
+  intToString(points, string);
+
+  renderText(3, 80, string);
 }
 
 /**
