@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <string.h>
 #include <GL/freeglut.h>
 
 #include "../utils/Defines/defines.h"
@@ -16,7 +17,7 @@
 #include "../objects/Obstacles/obstacles.h"
 
 
-void runEngine(short int scenario);
+void runEngine(short int scenario, char userName[50]);
 
 void keyboard(unsigned char key, int x, int y);
 
