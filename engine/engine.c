@@ -64,7 +64,7 @@ float newScenarioRendPosition;  // Posição de renderização do novo cenário 
 float obstaclesRendPosition = 0;  // Posição de renderização dos obstáculos.
 float lastObstacleRendPosition;  // Posição do último obstáculo renderizado.
 float difficulty = 0 ;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
-int controle_colisao=1; // Define qual objeto do vetor de obstaculos sera analisado na collisao
+int controle_colisao= 0; // Define qual objeto do vetor de obstaculos sera analisado na collisao
 
 /**
  * Troca o carro de faixa. Se a troca é para a direita e a faixa atual é a central, então a próxima faixa é a da 
@@ -336,30 +336,26 @@ void configView() {
 
 void colisao(){
   for(int i=0; i<10; i++){                                                                              
-    if(obstaclesProperties[i].collisionZ[0] < -128 && obstaclesProperties[i].collisionZ[0] > -130){     
+    if(obstaclesProperties[i].collisionZ[0] < -128 && obstaclesProperties[i].collisionZ[0] > -132){     
       controle_colisao = i;
+      printf("Objeto %d Posicao: %f\n", controle_colisao, obstaclesProperties[i].collisionZ[0]);
+      if(obstaclesProperties[controle_colisao].lane == LEFT_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1]){
+        printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[0], obstaclesProperties[controle_colisao].collisionX[1]);
+        paused = true;
+      }  
+      if(obstaclesProperties[controle_colisao].lane == RIGHT_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0]){ 
+        printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[1], obstaclesProperties[controle_colisao].collisionX[0]);
+        paused = true;
+      }  
+      if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1] && carProperties.lane >= 0){ // indo para a direita
+        printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[0], obstaclesProperties[controle_colisao].collisionX[1]);
+        paused = true;
+      }  
+      if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0] && carProperties.lane < 0){
+        printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[1], obstaclesProperties[controle_colisao].collisionX[0]);
+        paused = true; 
+      }
     }
-  }
-  printf("Objeto:%d  Distancia1: %f Distancia 2: %f\n",controle_colisao, obstaclesProperties[controle_colisao].collisionZ[0], obstaclesProperties[controle_colisao+1].collisionZ[0]);
-  //printf("Obstaculo %d %f %f  Carro %f %f\n", controle_colisao, obstaclesProperties[controle_colisao].collisionX[0], obstaclesProperties[controle_colisao].collisionX[1], carProperties.collisionX[0], carProperties.collisionX[1]);
-/**
- * Tratamento do obstaculo conforme a faixa que ele esta;
- * */    
-  if(obstaclesProperties[controle_colisao].lane == LEFT_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1]){
-    printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[0], obstaclesProperties[controle_colisao].collisionX[1]);
-    paused = true;
-  }  
-  if(obstaclesProperties[controle_colisao].lane == RIGHT_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0]){ 
-    printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[1], obstaclesProperties[controle_colisao].collisionX[0]);
-    paused = true;
-  }  
-  if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1] && carProperties.lane >= 0){ // indo para a direita
-    printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[0], obstaclesProperties[controle_colisao].collisionX[1]);
-    paused = true;
-  }  
-  if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0] && carProperties.lane < 0){
-    printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[1], obstaclesProperties[controle_colisao].collisionX[0]);
-    paused = true; 
   }
 }
  
