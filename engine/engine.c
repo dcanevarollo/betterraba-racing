@@ -63,7 +63,7 @@ float scenarioRendPosition = 0;  // Posição de renderização do cenário.
 float newScenarioRendPosition;  // Posição de renderização do novo cenário (impressão de "ambiente infinito").
 float obstaclesRendPosition = 0;  // Posição de renderização dos obstáculos.
 float lastObstacleRendPosition;  // Posição do último obstáculo renderizado.
-float difficulty = 0 ;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
+float difficulty = 1 ;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
 int controle_colisao= 0; // Define qual objeto do vetor de obstaculos sera analisado na collisao
 
 /**
@@ -336,7 +336,7 @@ void configView() {
 
 void colisao(){
   for(int i=0; i<10; i++){                                                                              
-    if(obstaclesProperties[i].collisionZ[0] < -128 && obstaclesProperties[i].collisionZ[0] > -132){     
+    if(obstaclesProperties[i].collisionZ[0] < -130 && obstaclesProperties[i].collisionZ[0] > -158){     
       controle_colisao = i;
       printf("Objeto %d Posicao: %f\n", controle_colisao, obstaclesProperties[i].collisionZ[0]);
       if(obstaclesProperties[controle_colisao].lane == LEFT_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1]){
