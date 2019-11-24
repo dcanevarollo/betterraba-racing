@@ -10,6 +10,8 @@
 typedef struct Properties {
   float lane;
   float distance;
+  float collisionX[4];
+  float collisionZ[4];
 } Properties;
 
 #endif

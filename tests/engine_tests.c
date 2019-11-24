@@ -10,6 +10,7 @@
 #include "../utils/Defines/defines.h"
 #include "../engine/engine.h"
 
+char userName[50];
 
 void display();
 

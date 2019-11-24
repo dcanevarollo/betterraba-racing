@@ -39,6 +39,8 @@ int camAxisX = 0, camAxisY = 1, camAxisZ = 0;
 
 int points = 0;
 
+char userName[50];
+
 /* Variáveis de manipulação dos objetos do jogo. */
 Properties carProperties;           // Armazena as propriedades do carro principal.
 Properties obstaclesProperties[10]; // Cada posição do vetor armazenará as propriedades de um obstáculo.
@@ -104,13 +106,13 @@ void savePoints()
 
   char numberOfLines;
 
-  file = fopen("file.txt", "w");
+  file = fopen("file.txt", "a");
 
   for (int c = getc(file); c != EOF; c = getc(file))
     if (c == '\n') // Increment count if this character is newline
       numberOfLines = numberOfLines + 1;
 
-  fprintf(file, itoa(points, string, 10), numberOfLines);
+  fprintf(file , "%s ; %s\n", userName, itoa(points, string, 10));
 
   fclose(file);
 }
@@ -379,26 +381,24 @@ void configView()
  * 
  * @param scenario  : define qual cenário será renderizado (recebido do arquivo main.c).
  */
-void runEngine(short int scenario, char userName[]) {
+void runEngine(short int scenario, char username[]) {
   configView();
 
   /* Definição das propriedades do carro (apenas na primeira renderização). */
-  if (firstRender)
-  {
+  if (firstRender) {
     setCarProperties();
     renderObstacles();
 
     firstRender = false;
   }
 
+  strcpy(userName, username);
+
   /* Cenários e objetos a serem construídos. */
   toInfiniteAndBeyond(scenario);
 
-  printf("%s", userName);
-
-  renderText(-14, 80, "Pontos: ");
-
   /* Renderia o contador de pontos*/
+  renderText(-14, 80, "Pontos: ");
   renderPoints();
 
   /* Renderização do carro ("fixo"). */
@@ -457,7 +457,13 @@ void keyboard(unsigned char key, int x, int y)
       camPosZ = 100;
     }
 
-    break;
+      if (perspective) {
+        camPosY = 20;
+        camPosZ = 200;
+      } else {
+        camPosY = 30;
+        camPosZ = 100;
+      }
 
   /* Sai do jogo. */
   case 'q':

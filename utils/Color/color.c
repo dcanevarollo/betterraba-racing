@@ -77,3 +77,7 @@ Color darkGrey() {
 Color lightOrange() {
   return construtor(255, 204, 153);
 }
+
+Color darkRed() {
+  return construtor(153, 0, 0);
+}

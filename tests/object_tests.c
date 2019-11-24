@@ -60,8 +60,13 @@ void display() {
 
   /* Insira a função de construção que quer testar aqui. Por exemplo:
   buildCar(); */
+<<<<<<< HEAD
   // glTranslatcleef(-10, 0, 0);
   //buildCar(green(), 0, 0);
+=======
+  // glTranslatef(-10, 0, 0);
+  buildCar(green(), 0, 0);
+>>>>>>> master
   // glTranslatef(20, 0, 0);
   // buildBuilding(purple(), 4, 7);
 
