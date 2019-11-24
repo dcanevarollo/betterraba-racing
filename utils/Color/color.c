@@ -70,6 +70,11 @@ Color beige() {
 Color sand() {
   return construtor(219, 159, 129);
 }
+
+Color darkSand() {
+  return construtor(210, 150, 120);
+}
+
 Color darkGrey() {
   return construtor(96, 96, 96);
 }

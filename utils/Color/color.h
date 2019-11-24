@@ -41,6 +41,8 @@ Color beige();
 
 Color sand();
 
+Color darkSand();
+
 Color darkGrey();
 
 Color lightOrange();
