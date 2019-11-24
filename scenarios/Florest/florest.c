@@ -45,7 +45,6 @@ void buildFlorestScenario() {
         buildPineTree();
         glTranslatef(10, 0, -25);
         buildRoundTree();
-
         glTranslatef(0, 0, -25);
         buildPineTree();
         glTranslatef(-10, 0, -25);

@@ -87,13 +87,13 @@ void buildRoundTree() {
 /** 
 *   Método que constrói um arbusto em forma de pirâmide.
 */
-void buildsandDune() {
-    Color sandDuneColor = green();  
+void buildPineBush() {
+    Color pineBushColor = green();  
 
     glPushMatrix();
   
         glScalef(2, 3, 2);
-        glColor3ub(sandDuneColor.red, sandDuneColor.green, sandDuneColor.blue);
+        glColor3ub(pineBushColor.red, pineBushColor.green, pineBushColor.blue);
 
         // Monta a pirâmide.
         glBegin(GL_TRIANGLES);          
