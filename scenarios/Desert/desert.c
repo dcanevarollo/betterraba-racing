@@ -13,21 +13,49 @@ void buildDesertScenario() {
     buildDesertFloor();
 
     glPushMatrix();
-        glTranslatef(25, 0, 5);
+        glTranslatef(25, 0, 120);
         buildCactus();
-        glTranslatef(0, 2, -25);
+        glTranslatef(50, 0, -100);
+        buildSandDune();
+        glTranslatef(-50, 2, -100);
         buildDesertHay();
-        glTranslatef(0, 0, -25);
+        glTranslatef(0, 0, -100);
         buildCactus();
+        glTranslatef(50, 0, -100);
+        buildSandDune();
+        glTranslatef(-50, 0, -100);
+        buildCactus();
+        glTranslatef(50, 0, -100);
+        buildSandDune();
+        glTranslatef(-50, 2, -100);
+        buildDesertHay();
+        glTranslatef(0, 0, -100);
+        buildCactus();
+        glTranslatef(50, 0, -100);
+        buildSandDune();
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(-25, 2, 5);
-        buildDesertHay();
-        glTranslatef(0, 0, -25);
+        glTranslatef(-25, 0, 120);
         buildCactus();
-        glTranslatef(0, 2, -25);
+        glTranslatef(-50, 0, -100);
+        buildSandDune();
+        glTranslatef(50, 2, -100);
         buildDesertHay();
+        glTranslatef(0, 0, -100);
+        buildCactus();
+        glTranslatef(-50, 0, -100);
+        buildSandDune();
+        glTranslatef(50, 0, -100);
+        buildCactus();
+        glTranslatef(-50, 0, -100);
+        buildSandDune();
+        glTranslatef(50, 2, -100);
+        buildDesertHay();
+        glTranslatef(0, 0, -100);
+        buildCactus();
+        glTranslatef(-50, 0, -100);
+        buildSandDune();
 
     glPopMatrix();
 }

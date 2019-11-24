@@ -12,5 +12,6 @@ void buildPineBush();
 void buildRoundBush();
 void buildCactus();
 void buildDesertHay();
+void buildSandDune();
 
 #endif
