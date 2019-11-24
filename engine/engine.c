@@ -16,7 +16,8 @@ void renderMainCar();
 void setObstaclesProperties();
 void setCarProperties();
 void configView();
-
+void colisao();
+void setPositionElements();
 
 #define VIEW_DISTANCE 500  // Distância de visualização da câmera.
 #define INIT_POS -150  // Negativo pois a função de translação para os carros inverte o sinal.
@@ -62,8 +63,8 @@ float scenarioRendPosition = 0;  // Posição de renderização do cenário.
 float newScenarioRendPosition;  // Posição de renderização do novo cenário (impressão de "ambiente infinito").
 float obstaclesRendPosition = 0;  // Posição de renderização dos obstáculos.
 float lastObstacleRendPosition;  // Posição do último obstáculo renderizado.
-float difficulty = 0;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
-
+float difficulty = 0 ;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
+int controle_colisao=1; // Define qual objeto do vetor de obstaculos sera analisado na collisao
 
 /**
  * Troca o carro de faixa. Se a troca é para a direita e a faixa atual é a central, então a próxima faixa é a da 
@@ -73,7 +74,9 @@ float difficulty = 0;  // Dificuldade do jogo. Incrementada a cada superação d
  * @param side  : indica para qual lado será a troca. Se esquerda, side == -1, se direita, side == 1.
  */
 void changeLanes(int side) {
-  carProperties.lane += side * 0.5;
+  carProperties.lane += side * 2;
+  carProperties.collisionX[0] = carProperties.lane - 1.5;
+  carProperties.collisionX[1] = carProperties.lane + 1.5;
 
   if (side == TO_RIGHT) {
     nextLane = currentLane == MIDDLE_LANE ? RIGHT_LANE : MIDDLE_LANE;
@@ -104,7 +107,7 @@ void toInfiniteAndBeyond(short int scenario) {
   /* Renderiza o cenário na posição atual e a incrementa. */
   renderScenario(scenario, scenarioRendPosition);
   scenarioRendPosition += difficulty + 0.1;
-
+  
   /* Se um novo cenário é necessário, renderiza-o na nova posição de renderização e a incrementa. */
   if (needNewScenario) {
     renderScenario(scenario, newScenarioRendPosition);
@@ -149,7 +152,9 @@ void toInfiniteAndBeyond(short int scenario) {
     currentPositionObstacles = 0;
   }
   
+  
   renderObstacles();
+ 
 }
 
 /**
@@ -218,11 +223,23 @@ void renderObstacles() {
   buildBox(obstaclesProperties[8].lane, obstaclesProperties[8].distance);
   buildTrafficCone(obstaclesProperties[9].lane, obstaclesProperties[9].distance);
 
-  glPopMatrix();
-
-  obstaclesRendPosition += difficulty + 0.1;
+  
+ glPopMatrix();
+ 
+ obstaclesRendPosition += difficulty + 0.1;
+ setPositionElements();
+ 
 }
+/** 
+* Esta função configura a posição do elemento em relação a renderização atual, 
+* auxiliando a função colisão e na variavel controle_colisão
+*/
+void setPositionElements(){
+  int i = 0;
+  for(i=0; i<10; i++)
+    obstaclesProperties[i].collisionZ[0] = obstaclesProperties[i].distance - obstaclesRendPosition; 
 
+}
 /** 
  * Trata a renderização e animação do carro.
  */
@@ -273,6 +290,9 @@ void setObstaclesProperties() {
 
     obstaclesProperties[i].distance = distance;
     obstaclesProperties[i].lane = lane;
+    obstaclesProperties[i].collisionX[0] = lane - 1.5;
+    obstaclesProperties[i].collisionX[1] = lane + 1.5;
+    obstaclesProperties[i].collisionZ[0] = obstaclesRendPosition + distance;
   }
 }
 
@@ -283,6 +303,8 @@ void setObstaclesProperties() {
 void setCarProperties() {
   carProperties.lane = MIDDLE_LANE;
   carProperties.distance = INIT_POS;
+  carProperties.collisionX[0] = MIDDLE_LANE - 1.5;
+  carProperties.collisionX[1] = MIDDLE_LANE + 1.5;
 }
 
 /**
@@ -311,6 +333,36 @@ void configView() {
  * 
  * @param scenario  : define qual cenário será renderizado (recebido do arquivo main.c).
  */
+
+void colisao(){
+  for(int i=0; i<10; i++){                                                                              
+    if(obstaclesProperties[i].collisionZ[0] < -128 && obstaclesProperties[i].collisionZ[0] > -130){     
+      controle_colisao = i;
+    }
+  }
+  printf("Objeto:%d  Distancia1: %f Distancia 2: %f\n",controle_colisao, obstaclesProperties[controle_colisao].collisionZ[0], obstaclesProperties[controle_colisao+1].collisionZ[0]);
+  //printf("Obstaculo %d %f %f  Carro %f %f\n", controle_colisao, obstaclesProperties[controle_colisao].collisionX[0], obstaclesProperties[controle_colisao].collisionX[1], carProperties.collisionX[0], carProperties.collisionX[1]);
+/**
+ * Tratamento do obstaculo conforme a faixa que ele esta;
+ * */    
+  if(obstaclesProperties[controle_colisao].lane == LEFT_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1]){
+    printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[0], obstaclesProperties[controle_colisao].collisionX[1]);
+    paused = true;
+  }  
+  if(obstaclesProperties[controle_colisao].lane == RIGHT_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0]){ 
+    printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[1], obstaclesProperties[controle_colisao].collisionX[0]);
+    paused = true;
+  }  
+  if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1] && carProperties.lane >= 0){ // indo para a direita
+    printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[0], obstaclesProperties[controle_colisao].collisionX[1]);
+    paused = true;
+  }  
+  if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0] && carProperties.lane < 0){
+    printf("principal:%f   Obstaculo:%f\n", carProperties.collisionX[1], obstaclesProperties[controle_colisao].collisionX[0]);
+    paused = true; 
+  }
+}
+ 
 void runEngine(short int scenario) {
   configView();
 
@@ -321,13 +373,15 @@ void runEngine(short int scenario) {
 
     firstRender = false;
   }
+  
 
   /* Cenários e objetos a serem construídos. */
   toInfiniteAndBeyond(scenario);
 
   /* Renderização do carro ("fixo"). */
   renderMainCar();
-
+  colisao();
+  
   if (!paused)
     glutPostRedisplay();
 }
