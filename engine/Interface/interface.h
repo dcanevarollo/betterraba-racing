@@ -1,11 +1,11 @@
-#ifndef PUNCTUATION_H
-#define PUNCTUATION_H
+#ifndef INTERFACE_H
+#define INTERFACE_H
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <GL/freeglut.h>
 
-#include "../engine.h"
+#include "../Root/root.h"
 
 void setPlayerName(char *playerName);
 
