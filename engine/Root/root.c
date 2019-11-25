@@ -71,7 +71,7 @@ void runEngine(short int scenario, char username) {
   /* Cenários e objetos a serem construídos. */
   toInfiniteAndBeyond(scenario);
 
-  /* Renderia o contador de pontos*/
+  /* Renderiza o contador de pontos. */
   renderText(-14, 80, "Pontos: ");
   renderPoints();
 
