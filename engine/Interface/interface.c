@@ -9,24 +9,72 @@ void setPlayerName(char *playerName) {
   strcpy(userName, playerName);
 }
 
-
 void savePoints() {
   FILE *file;
   char string[12];
+  int line = 0;
+  
+  char name[100];
+  char point[20];
 
-  char numberOfLines;
+  int numberOfLines = 0;
 
-  file = fopen("file.txt", "a");
 
-  for (int c = getc(file); c != EOF; c = getc(file))
-    if (c == '\n')
-      numberOfLines = numberOfLines + 1;
+  file = fopen("../engine/Interface/ranking.txt", "a");
+    conversion(points, string);
+    
+    fprintf(file, "%s %s", userName, string);
+  fclose(file);
 
-  intToString(points, string);
+  file = fopen("../engine/Interface/ranking.txt", "r");
+  
+  while (!feof(file)) {
+      fscanf(file, "%s %s", name, point);
+      line++;
+  }
 
-  fprintf(file , "%s ; %s\n", userName, string);
+  rewind(file);
+  
+  Ranking rank[line - 1];
+  int i = 0;
+  while (!feof(file)) {
+      fscanf(file, "%s %d", rank[i].name, &rank[i].point);
+      i++;
+  }
 
   fclose(file);
+
+  int k, j; 
+  Ranking aux;
+
+  for (k = 0; k < line - 1; k++) {
+    for (j = 0; j < line - k - 1; j++) {
+      if (rank[j].point < rank[j + 1].point) {
+          aux.point = rank[j].point;
+          strcpy(aux.name, rank[j].name);
+          rank[j].point = rank[j + 1].point;
+          strcpy(rank[j].name, rank[j + 1].name);
+          rank[j + 1].point = aux.point;
+          strcpy(rank[j + 1].name, aux.name);
+      }
+    }
+  }
+
+  rewind(file);
+  file = fopen("../engine/Interface/ranking.txt", "w");
+
+  for (j = 0; j < line - 1; j++) {
+    rank[j].collocation = j + 1;
+    
+    conversion(rank[j].point, string);
+
+    fprintf(file, "%d %s %s\n", rank[j].collocation, rank[j].name, string);
+
+  }
+
+  fclose(file);
+
+
 }
 
 /**
@@ -37,7 +85,7 @@ void renderPoints() {
 
   points++;
 
-  intToString(points, string);
+  conversion(points, string);
 
   renderText(3, 80, string);
 }
