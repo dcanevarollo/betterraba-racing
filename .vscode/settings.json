@@ -5,11 +5,11 @@
     "car.h": "c",
     "building.h": "c",
     "engine.h": "c",
-    "queue.h": "c",
     "properties.h": "c",
     "defines.h": "c",
-    "punctuation.h": "c",
     "interface.h": "c",
-    "conversions.h": "c"
+    "conversions.h": "c",
+    "root.h": "c",
+    "*.h\u0000h": "c"
   }
 }

@@ -6,9 +6,9 @@
 #include <string.h>
 #include <GL/freeglut.h>
 
-#include "../engine.h"
 #include "../../utils/Conversions/conversions.h"
 #include "../../utils/Ranking/ranking.h"
+#include "../Root/root.h"
 
 void setPlayerName(char *playerName);
 
