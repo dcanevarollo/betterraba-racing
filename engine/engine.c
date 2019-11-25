@@ -160,7 +160,7 @@ void toInfiniteAndBeyond(short int scenario) {
   /* Renderiza o cenário na posição atual e a incrementa. */
   renderScenario(scenario, scenarioRendPosition);
 
-  scenarioRendPosition += difficulty + 3;
+  scenarioRendPosition += difficulty + 0.1;
   
   /* Se um novo cenário é necessário, renderiza-o na nova posição de renderização e a incrementa. */
   if (needNewScenario) {
@@ -201,11 +201,15 @@ void toInfiniteAndBeyond(short int scenario) {
 
   /* A dificuldade aumentará a cada onda de obstáculos superados. */
   if (distanceToLastObstacle <= 0) {
-    difficulty += 0.08;
+    
+    if(difficulty < 1.36)
+      difficulty += 0.08;
+    
     refreshScene = true;
     currentPositionObstacles = 0;
   }
-  
+  printf("%2f\n", difficulty);
+
   renderObstacles();
 }
 
@@ -381,42 +385,39 @@ void configView() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-/**
- * Função que executa o motor gráfico.
- * 
- * @param scenario  : define qual cenário será renderizado (recebido do arquivo main.c).
- */
+void gameOver() {
+  paused = true;
+  renderText(-20, 130, "SE FODEU");
+}
+
 void collisionTreatment() {
-  
-  for(int i=0; i<10; i++) {
-
-    if(obstaclesProperties[i].collisionZ[0] < -130 && obstaclesProperties[i].collisionZ[0] > -158) {      
-      collisionControl = i;
-
-      if(obstaclesProperties[collisionControl].lane == LEFT_LANE && 
-              carProperties.collisionX[0] <= obstaclesProperties[collisionControl].collisionX[1]) 
-        paused = true;
-
-      if(obstaclesProperties[collisionControl].lane == RIGHT_LANE && 
-              carProperties.collisionX[1] >= obstaclesProperties[collisionControl].collisionX[0]) 
-        paused = true;
-        
-      if(obstaclesProperties[collisionControl].lane == MIDDLE_LANE && 
-              carProperties.collisionX[0] <= obstaclesProperties[collisionControl].collisionX[1] && 
-              carProperties.lane >= 0) // indo para a direita
-        paused = true;
-        
-      if(obstaclesProperties[collisionControl].lane == MIDDLE_LANE && 
-              carProperties.collisionX[1] >= obstaclesProperties[collisionControl].collisionX[0] && 
-              carProperties.lane < 0)
-        paused = true; 
+  for(int i=0; i<10; i++){                                                                              
+    if(obstaclesProperties[i].collisionZ[0] < -130 && obstaclesProperties[i].collisionZ[0] > -158){     
       
+      controle_colisao = i;
+
+      if(obstaclesProperties[controle_colisao].lane == LEFT_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1])
+        gameOver();
+
+      if(obstaclesProperties[controle_colisao].lane == RIGHT_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0])
+        gameOver();
+
+      if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1] && carProperties.lane >= 0)// indo para a direita
+        gameOver();
+
+      if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0] && carProperties.lane < 0)
+        gameOver();
     }
 
   }
 
 }
 
+/**
+ * Função que executa o motor gráfico.
+ * 
+ * @param scenario  : define qual cenário será renderizado (recebido do arquivo main.c).
+ */
 void runEngine(short int scenario, char username[]) {
   configView();
 
