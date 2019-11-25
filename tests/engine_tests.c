@@ -8,9 +8,8 @@
 #include <GL/freeglut.h>
 
 #include "../utils/Defines/defines.h"
-#include "../engine/engine.h"
+#include "../engine/Root/root.h"
 
-char userName[50];
 
 void display();
 
@@ -29,7 +28,7 @@ void display() {
   glClearColor(204.0f/255.0f, 229.0f/255.0f,  1.0f, 1.0f);
 
   /* Passe o cenário desejado como parâmetro do motor gráfico. */
-  runEngine(DESERT, userName);
+  runEngine(DESERT, 't');
 
   glutSwapBuffers();
 }
@@ -42,9 +41,6 @@ int main(int argc, char **argv) {
   glutInitWindowSize(800, 600);
   glutInitWindowPosition(0, 0);
   glutCreateWindow("Beta test");
-
-  // printf("Digite seu nome de usuario: ");
-  // scanf("%[^\n]", userName);
 
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);

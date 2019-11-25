@@ -60,6 +60,6 @@ void renderText(int x, int y, char *string) {
 }
 
 void gameOver() {
-  setPaused();
+  setPaused(true);
   renderText(-20, 130, "SE FODEU");
 }
