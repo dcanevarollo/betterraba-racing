@@ -8,5 +8,8 @@
     "queue.h": "c",
     "properties.h": "c",
     "defines.h": "c",
+    "punctuation.h": "c",
+    "interface.h": "c",
+    "conversions.h": "c"
   }
 }

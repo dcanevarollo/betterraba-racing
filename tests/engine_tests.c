@@ -14,8 +14,6 @@ char userName[50];
 
 void display();
 
-char userName[50];
-
 
 /**
  * Função de exibição principal.
@@ -31,7 +29,7 @@ void display() {
   glClearColor(204.0f/255.0f, 229.0f/255.0f,  1.0f, 1.0f);
 
   /* Passe o cenário desejado como parâmetro do motor gráfico. */
-  runEngine(FLOREST, userName);
+  runEngine(DESERT, userName);
 
   glutSwapBuffers();
 }

@@ -13,16 +13,16 @@ void renderObstacles();
 void renderMainCar();
 void setObstaclesProperties();
 void setCarProperties();
+void setPositionElements();
 void configView();
 void collisionTreatment();
-void setPositionElements();
 
 #define VIEW_DISTANCE 500  // Distância de visualização da câmera.
 #define INIT_POS -150  // Negativo pois a função de translação para os carros inverte o sinal.
 #define CLOSE_LIMIT -300  // Limite de aproximação do carro com o horizonte da cena.
-#define SAFE_LIMIT 300    // Limite de segurança para criação de novos obstáculos.
-#define SCENE_LIMIT 200   // Limite da cena (a partir de múltiplos deste são renderizados novos objetos).
-#define SCENE_HORIZON 400 // "Horizonte" imaginário da cena.
+#define SAFE_LIMIT 300  // Limite de segurança para criação de novos obstáculos.
+#define SCENE_LIMIT 200  // Limite da cena (a partir de múltiplos deste são renderizados novos objetos).
+#define SCENE_HORIZON 400  // "Horizonte" imaginário da cena.
 
 /* Constantes de troca de faixas. */
 #define TO_LEFT -1
@@ -39,35 +39,32 @@ int camPosX = 0, camPosY = 20, camPosZ = 200;
 int camLookX = 0, camLookY = 10, camLookZ = 0;
 int camAxisX = 0, camAxisY = 1, camAxisZ = 0;
 
-int points = 0;
 
-char userName[50];
-
-
-int collisionControl = 0; // Define qual objeto do vetor de obstáculos sera analisado na colisão
 
 /* Variáveis de manipulação dos objetos do jogo. */
-Properties carProperties;           // Armazena as propriedades do carro principal.
-Properties obstaclesProperties[10]; // Cada posição do vetor armazenará as propriedades de um obstáculo.
+int collisionControl = 0;  // Define qual objeto do vetor de obstáculos será analisado na colisão.
+
+Properties carProperties;  // Armazena as propriedades do carro principal.
+Properties obstaclesProperties[10];  // Cada posição do vetor armazenará as propriedades de um obstáculo.
 
 /* Variáveis de controle. */
-bool paused = true;               // Utilizada para pausar o jogo.
-bool firstRender = true;          // Define a primeira renderização para controle dos boundaries.
-bool needNewScenario = false;     // Define se é necessário a renderização de um novo cenário a frente.
-bool refreshScene = true;         // Define se é necessário criar novas propriedades para novos obstáculos.
-bool carAnimationEnabled = false; // Ativa a animação do carrinho (para troca de faixas).
+bool paused = true;  // Utilizada para pausar o jogo.
+bool firstRender = true;  // Define a primeira renderização para controle dos boundaries.
+bool needNewScenario = false;  // Define se é necessário a renderização de um novo cenário a frente.
+bool refreshScene = true;  // Define se é necessário criar novas propriedades para novos obstáculos.
+bool carAnimationEnabled = false;  // Ativa a animação do carrinho (para troca de faixas).
 
-short int currentLane = MIDDLE_LANE; // Faixa atual que o carro está.
-short int animationSide;             // Lado em que o carro ia se movimentar.
-short int nextLane;                  // Próxima pista (na movimentação do carrinho).
+short int currentLane = MIDDLE_LANE;  // Faixa atual que o carro está.
+short int animationSide;  // Lado em que o carro ia se movimentar.
+short int nextLane;  // Próxima pista (na movimentação do carrinho).
 
-float currentPositionHorizon = INIT_POS;   // posição atual do carro em relação ao horizonte da cena.
-float currentPositionObstacles = INIT_POS; // posição atual do carro em relação ao último obstáculo renderizado.
-float scenarioRendPosition = 0;            // Posição de renderização do cenário.
-float newScenarioRendPosition;             // Posição de renderização do novo cenário (impressão de "ambiente infinito").
-float obstaclesRendPosition = 0;           // Posição de renderização dos obstáculos.
-float lastObstacleRendPosition;            // Posição do último obstáculo renderizado.
-float difficulty = 1;                      // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
+float currentPositionHorizon = INIT_POS;  // posição atual do carro em relação ao horizonte da cena.
+float currentPositionObstacles = INIT_POS;  // posição atual do carro em relação ao último obstáculo renderizado.
+float scenarioRendPosition = 0;  // Posição de renderização do cenário.
+float newScenarioRendPosition;  // Posição de renderização do novo cenário (impressão de "ambiente infinito").
+float obstaclesRendPosition = 0;  // Posição de renderização dos obstáculos.
+float lastObstacleRendPosition;  // Posição do último obstáculo renderizado.
+float difficulty = 1;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
 
 /**
  * Troca o carro de faixa. Se a troca é para a direita e a faixa atual é a central, então a próxima faixa é a da 
@@ -99,55 +96,6 @@ void changeLanes(int side) {
   }
 
   glutPostRedisplay();
-}
-
-void savePoints() {
-  FILE *file;
-  char string[12];
-
-  char numberOfLines;
-
-  file = fopen("file.txt", "a");
-
-  for (int c = getc(file); c != EOF; c = getc(file))
-    if (c == '\n') // Increment count if this character is newline
-      numberOfLines = numberOfLines + 1;
-
-  intToString(points, string);
-
-  fprintf(file , "%s ; %s\n", userName, string);
-
-  fclose(file);
-}
-
-/**
- * Função responsável por renderizar um texto em tela
- * @param x     : posição do texto em X
- * @param y     : posição do texto em Y
- * @param string: array de char contendo o texto a ser renderizado
- */
-void renderText(int x, int y, char *string) {
-  glColor3f(1, 1, 1);
-  glRasterPos2f(x, y);
-
-  int stringSize = (int)strlen(string);
-
-  for (int i = 0; i < stringSize; i++) {
-    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, string[i]);
-  }
-}
-
-/**
- * Função responsável por renderizar a pontuação do jogo
- */
-void renderPoints() {
-  char string[12];
-
-  points++;
-
-  intToString(points, string);
-
-  renderText(3, 80, string);
 }
 
 /**
@@ -202,13 +150,12 @@ void toInfiniteAndBeyond(short int scenario) {
   /* A dificuldade aumentará a cada onda de obstáculos superados. */
   if (distanceToLastObstacle <= 0) {
     
-    if(difficulty < 1.36)
+    if (difficulty < 1.36)
       difficulty += 0.08;
     
     refreshScene = true;
     currentPositionObstacles = 0;
   }
-  printf("%2f\n", difficulty);
 
   renderObstacles();
 }
@@ -283,17 +230,18 @@ void renderObstacles() {
  glPopMatrix();
  
  obstaclesRendPosition += difficulty + 0.1;
+
  setPositionElements();
- 
 }
 
 /** 
-* Esta função configura a posição do elemento em relação a renderização atual, 
-* auxiliando a função colisão e na variavel controle_colisão
+* Esta função configura a posição do elemento em relação a renderização atual, auxiliando a função colisão e na variável
+* collisionControll.
 */
 void setPositionElements() {
-  int i = 0;
-  for(i=0; i<10; i++)
+  int i;
+
+  for (i = 0; i < 10; i++)
     obstaclesProperties[i].collisionZ[0] = obstaclesProperties[i].distance - obstaclesRendPosition; 
 }
 
@@ -385,27 +333,22 @@ void configView() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void gameOver() {
-  paused = true;
-  renderText(-20, 130, "SE FODEU");
-}
-
 void collisionTreatment() {
-  for(int i=0; i<10; i++){                                                                              
+  for (int i = 0; i < 10; i++){                                                                              
     if(obstaclesProperties[i].collisionZ[0] < -130 && obstaclesProperties[i].collisionZ[0] > -158){     
       
-      controle_colisao = i;
+      collisionControl = i;
 
-      if(obstaclesProperties[controle_colisao].lane == LEFT_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1])
+      if(obstaclesProperties[collisionControl].lane == LEFT_LANE && carProperties.collisionX[0] <= obstaclesProperties[collisionControl].collisionX[1])
         gameOver();
 
-      if(obstaclesProperties[controle_colisao].lane == RIGHT_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0])
+      if(obstaclesProperties[collisionControl].lane == RIGHT_LANE && carProperties.collisionX[1] >= obstaclesProperties[collisionControl].collisionX[0])
         gameOver();
 
-      if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[0] <= obstaclesProperties[controle_colisao].collisionX[1] && carProperties.lane >= 0)// indo para a direita
+      if(obstaclesProperties[collisionControl].lane == MIDDLE_LANE && carProperties.collisionX[0] <= obstaclesProperties[collisionControl].collisionX[1] && carProperties.lane >= 0)// indo para a direita
         gameOver();
 
-      if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0] && carProperties.lane < 0)
+      if(obstaclesProperties[collisionControl].lane == MIDDLE_LANE && carProperties.collisionX[1] >= obstaclesProperties[collisionControl].collisionX[0] && carProperties.lane < 0)
         gameOver();
     }
 
@@ -430,7 +373,7 @@ void runEngine(short int scenario, char username[]) {
   }
   
 
-  strcpy(userName, username);
+  setPlayerName(username);
 
   /* Cenários e objetos a serem construídos. */
   toInfiniteAndBeyond(scenario);
@@ -517,4 +460,8 @@ void keyboard(unsigned char key, int x, int y) {
   }
 
   glutPostRedisplay();
+}
+
+void setPaused() {
+  paused = !paused;
 }

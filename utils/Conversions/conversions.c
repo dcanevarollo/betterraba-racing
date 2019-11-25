@@ -1,10 +1,10 @@
-#include "intToString.h"
-
 /**
  * @author Rafael Campos
- * Arquivo com funções que transformam um inteiro em uma string, 
- *  para ser utilizado para mostrar a pontuação do jogador.
+ * Arquivo com funções que transformam um inteiro em uma string, para ser utilizado para mostrar a pontuação do jogador.
  */
+
+#include "conversions.h"
+
 
 void reverse(char s[]) {
     int i, j;
@@ -34,4 +34,4 @@ void intToString(int n, char s[]) {
     s[i] = '\0';
     
     reverse(s);
-}   
+}
