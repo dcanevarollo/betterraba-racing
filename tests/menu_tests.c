@@ -72,18 +72,6 @@ void renderCarro(int color){
          
 }
 
-void imprimir(int x, int y,int z, char *string){
-    glColor3f(1, 1, 1);          //era pra controlar a cor mas nao consigo fzer funcionar
-    glRasterPos2f(x,y);
-    
-    int len = (int) strlen(string);         //Pega o tamanho da string
-    
-    //loop to display character by character
-    for (int i = 0; i <len; i++){
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,string[i]);
-    }
-}
-
 void display() {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_LINE_SMOOTH);

@@ -119,13 +119,13 @@ void defineObstaclesProperties() {
 /** 
  * Trata a renderização e animação do carro.
  */
-void renderMainCar() {
+void renderMainCar(short int carColor) {
   glPushMatrix();
 
   if (isAnimationEnabled())
     changeLanes(getAnimationSide());
 
-  buildCar(blue(), carProperties.lane, carProperties.distance);
+  buildMainCar(carColor, carProperties.lane, carProperties.distance);
 
   glPopMatrix();
 }
