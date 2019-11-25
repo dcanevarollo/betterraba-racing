@@ -211,3 +211,38 @@ void buildDesertHay() {
      
     glPopMatrix();
 }
+
+/** 
+*   Método que constrói uma duna de areia em forma de pirâmide.
+*/
+void buildSandDune() {
+    Color sandDuneColor = darkSand();  
+
+    glPushMatrix();
+  
+        glScalef(50, 6, 50);
+        glColor3ub(sandDuneColor.red, sandDuneColor.green, sandDuneColor.blue);
+
+        // Monta a pirâmide.
+        glBegin(GL_TRIANGLES);          
+        
+            glVertex3f( 0.0f, 1.0f, 0.0f);
+            glVertex3f(-1.0f, -1.0f, 1.0f);
+            glVertex3f(1.0f, -1.0f, 1.0f);
+        
+            glVertex3f(0.0f, 1.0f, 0.0f);
+            glVertex3f(1.0f, -1.0f, 1.0f);
+            glVertex3f(1.0f, -1.0f, -1.0f);
+        
+            glVertex3f(0.0f, 1.0f, 0.0f);
+            glVertex3f(1.0f, -1.0f, -1.0f);
+            glVertex3f(-1.0f, -1.0f, -1.0f);
+        
+            glVertex3f( 0.0f, 1.0f, 0.0f);
+            glVertex3f(-1.0f,-1.0f,-1.0f);
+            glVertex3f(-1.0f,-1.0f, 1.0f);
+        
+        glEnd(); 
+    
+    glPopMatrix();
+}

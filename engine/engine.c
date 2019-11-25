@@ -14,7 +14,7 @@ void renderMainCar();
 void setObstaclesProperties();
 void setCarProperties();
 void configView();
-void colisao();
+void collisionTreatment();
 void setPositionElements();
 
 #define VIEW_DISTANCE 500  // Distância de visualização da câmera.
@@ -44,7 +44,8 @@ int points = 0;
 char userName[50];
 
 
-int controle_colisao= 0; // Define qual objeto do vetor de obstaculos sera analisado na collisao
+int collisionControl = 0; // Define qual objeto do vetor de obstáculos sera analisado na colisão
+
 /* Variáveis de manipulação dos objetos do jogo. */
 Properties carProperties;           // Armazena as propriedades do carro principal.
 Properties obstaclesProperties[10]; // Cada posição do vetor armazenará as propriedades de um obstáculo.
@@ -66,7 +67,7 @@ float scenarioRendPosition = 0;            // Posição de renderização do cen
 float newScenarioRendPosition;             // Posição de renderização do novo cenário (impressão de "ambiente infinito").
 float obstaclesRendPosition = 0;           // Posição de renderização dos obstáculos.
 float lastObstacleRendPosition;            // Posição do último obstáculo renderizado.
-float difficulty = 0;                      // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
+float difficulty = 1;                      // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
 
 /**
  * Troca o carro de faixa. Se a troca é para a direita e a faixa atual é a central, então a próxima faixa é a da 
@@ -80,22 +81,18 @@ void changeLanes(int side) {
   carProperties.collisionX[0] = carProperties.lane - 1.5;
   carProperties.collisionX[1] = carProperties.lane + 1.5;
 
-  if (side == TO_RIGHT)
-  {
+  if (side == TO_RIGHT) {
     nextLane = currentLane == MIDDLE_LANE ? RIGHT_LANE : MIDDLE_LANE;
 
-    if (carProperties.lane >= nextLane)
-    {
+    if (carProperties.lane >= nextLane) {
       carAnimationEnabled = false;
       currentLane = nextLane;
     }
   }
-  else if (side == TO_LEFT)
-  {
+  else if (side == TO_LEFT) {
     nextLane = currentLane == MIDDLE_LANE ? LEFT_LANE : MIDDLE_LANE;
 
-    if (carProperties.lane <= nextLane)
-    {
+    if (carProperties.lane <= nextLane) {
       carAnimationEnabled = false;
       currentLane = nextLane;
     }
@@ -104,35 +101,7 @@ void changeLanes(int side) {
   glutPostRedisplay();
 }
 
-/* reverse:  reverse string s in place */
- void reverse(char s[]) {
-     int i, j;
-     char c;
-
-     for (i = 0, j = strlen(s)-1; i<j; i++, j--) {
-         c = s[i];
-         s[i] = s[j];
-         s[j] = c;
-     }
-}
-
-void intToString(int n, char s[]) {
-    int i, sign;
-
-    if ((sign = n) < 0)  
-        n = -n;          
-    i = 0;
-    do {       
-        s[i++] = n % 10 + '0';   
-    } while ((n /= 10) > 0);     
-    if (sign < 0)
-        s[i++] = '-';
-    s[i] = '\0';
-    reverse(s);
-}   
-
-void savePoints()
-{
+void savePoints() {
   FILE *file;
   char string[12];
 
@@ -157,15 +126,13 @@ void savePoints()
  * @param y     : posição do texto em Y
  * @param string: array de char contendo o texto a ser renderizado
  */
-void renderText(int x, int y, char *string)
-{
+void renderText(int x, int y, char *string) {
   glColor3f(1, 1, 1);
   glRasterPos2f(x, y);
 
   int stringSize = (int)strlen(string);
 
-  for (int i = 0; i < stringSize; i++)
-  {
+  for (int i = 0; i < stringSize; i++) {
     glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, string[i]);
   }
 }
@@ -173,8 +140,7 @@ void renderText(int x, int y, char *string)
 /**
  * Função responsável por renderizar a pontuação do jogo
  */
-void renderPoints()
-{
+void renderPoints() {
   char string[12];
 
   points++;
@@ -190,16 +156,14 @@ void renderPoints()
  * 
  * @param scenario  : cenário a ser renderizado.
  */
-void toInfiniteAndBeyond(short int scenario)
-{
+void toInfiniteAndBeyond(short int scenario) {
   /* Renderiza o cenário na posição atual e a incrementa. */
   renderScenario(scenario, scenarioRendPosition);
 
   scenarioRendPosition += difficulty + 0.1;
   
   /* Se um novo cenário é necessário, renderiza-o na nova posição de renderização e a incrementa. */
-  if (needNewScenario)
-  {
+  if (needNewScenario) {
     renderScenario(scenario, newScenarioRendPosition);
     newScenarioRendPosition += difficulty + 0.1;
   }
@@ -212,8 +176,7 @@ void toInfiniteAndBeyond(short int scenario)
   /* Se a distância atingiu seu limite, um novo cenário deve ser renderizado a frente. A nova posição de renderização, 
   no caso, será a distância para o horizonte mais um espaço de segurança, que chamaremos de limite de fechamento (ou 
   close limit). */
-  if (distanceToHorizon <= SCENE_LIMIT)
-  {
+  if (distanceToHorizon <= SCENE_LIMIT) {
     /* Se é a primeira vez que essa condição será adentrada, a variável de controle needNewScenario terá valor falso.
     Nesse caso, setamos ela e a variável de refresh de obstáculos para verdadeiro. */
     if (!needNewScenario)
@@ -225,8 +188,7 @@ void toInfiniteAndBeyond(short int scenario)
   /* Se a distância para o horizonte ultrapassou o oposto do limite de fechamento, significa que não é mais necessário
   renderizar o "antigo" cenário. Neste caso, a posição de renderização atual torna-se a nova posição e a posição do
   carro é resetada. */
-  if (distanceToHorizon <= CLOSE_LIMIT)
-  {
+  if (distanceToHorizon <= CLOSE_LIMIT) {
     scenarioRendPosition = newScenarioRendPosition;
     needNewScenario = false;
     currentPositionHorizon = 0;
@@ -257,31 +219,29 @@ void toInfiniteAndBeyond(short int scenario)
  * @param scenario          : define qual cenário será renderizado.
  * @param renderizationPos  : indica a posição em que a matriz do cenário será renderizada.
  */
-void renderScenario(short int scenario, float renderizationPos)
-{
+void renderScenario(short int scenario, float renderizationPos) {
   glPushMatrix();
 
   glTranslatef(0, 0, renderizationPos);
 
-  switch (scenario)
-  {
-  case 0:
-    buildUrbanScenario();
-    break;
+  switch (scenario) {
+    case 0:
+      buildUrbanScenario();
+      break;
 
-    // case 1:
-    //   buildDesertScenario();
-    //   break;
+    case 1:
+      buildDesertScenario();
+      break;
 
-    // case 2:
-    //   buildFlorestScenario();
-    //   break;
+    case 2:
+      buildFlorestScenario();
+      break;
 
-  default:
-    printf("Erro na inicializacao do cenario.\n\n");
-    glutExit();
-    exit(1);
-    break;
+    default:
+      printf("Erro na inicializacao do cenario.\n\n");
+      glutExit();
+      exit(1);
+      break;
   }
 
   glPopMatrix();
@@ -291,11 +251,9 @@ void renderScenario(short int scenario, float renderizationPos)
  * Trata a renderização dos obstáculos na pista. A distância em z e a faixa que aparecerão serão aleatórios. Cada pro-
  * priedade para cada obstáculo é uma posição do vetor de propriedades.
  */
-void renderObstacles()
-{
+void renderObstacles() {
   /* Define as propriedades dos obstáculos a serem criados. */
-  if (refreshScene)
-  {
+  if (refreshScene) {
     setObstaclesProperties();
 
     if (!firstRender)
@@ -328,21 +286,21 @@ void renderObstacles()
  setPositionElements();
  
 }
+
 /** 
 * Esta função configura a posição do elemento em relação a renderização atual, 
 * auxiliando a função colisão e na variavel controle_colisão
 */
-void setPositionElements(){
+void setPositionElements() {
   int i = 0;
   for(i=0; i<10; i++)
     obstaclesProperties[i].collisionZ[0] = obstaclesProperties[i].distance - obstaclesRendPosition; 
-
 }
+
 /** 
  * Trata a renderização e animação do carro.
  */
-void renderMainCar()
-{
+void renderMainCar() {
   glPushMatrix();
 
   if (carAnimationEnabled)
@@ -357,8 +315,7 @@ void renderMainCar()
  * Cria os limites para cadad obstáculo. É utilizado uma função de geração aleatória, tanto para definir qual faixa 
  * tanto para definir em qual distância em z ele será criado.
  */
-void setObstaclesProperties()
-{
+void setObstaclesProperties() {
   int i;
   int lane;
   float distance;
@@ -366,28 +323,26 @@ void setObstaclesProperties()
 
   srand((unsigned)time(&seed));
 
-  for (i = 0; i < 10; i++)
-  {
+  for (i = 0; i < 10; i++) {
     lane = rand() % 3;
     distance = rand() % 30 + i * 50; // Os objetos ficarão mais distantes de acordo com sua posição i do vetor.
 
-    switch (lane)
-    {
-    case 0:
-      lane = LEFT_LANE;
-      break;
+    switch (lane) {
+      case 0:
+        lane = LEFT_LANE;
+        break;
 
-    case 1:
-      lane = MIDDLE_LANE;
-      break;
+      case 1:
+        lane = MIDDLE_LANE;
+        break;
 
-    case 2:
-      lane = RIGHT_LANE;
-      break;
+      case 2:
+        lane = RIGHT_LANE;
+        break;
 
-    default:
-      lane = MIDDLE_LANE;
-      break;
+      default:
+        lane = MIDDLE_LANE;
+        break;
     }
 
     obstaclesProperties[i].distance = distance;
@@ -402,8 +357,7 @@ void setObstaclesProperties()
  * Cria os limites para o carro principal. No caso, ele será renderizado inicialmente na faixa do meio, na posição 20
  * em z.
  */
-void setCarProperties()
-{
+void setCarProperties() {
   carProperties.lane = MIDDLE_LANE;
   carProperties.distance = INIT_POS;
   carProperties.collisionX[0] = MIDDLE_LANE - 1.5;
@@ -413,8 +367,7 @@ void setCarProperties()
 /**
  * Faz as configurações de câmera e perspectiva do frame.
  */
-void configView()
-{
+void configView() {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
@@ -437,8 +390,7 @@ void gameOver() {
   renderText(-20, 130, "SE FODEU");
 }
 
-
-void colisao(){
+void collisionTreatment() {
   for(int i=0; i<10; i++){                                                                              
     if(obstaclesProperties[i].collisionZ[0] < -130 && obstaclesProperties[i].collisionZ[0] > -158){     
       
@@ -456,9 +408,16 @@ void colisao(){
       if(obstaclesProperties[controle_colisao].lane == MIDDLE_LANE && carProperties.collisionX[1] >= obstaclesProperties[controle_colisao].collisionX[0] && carProperties.lane < 0)
         gameOver();
     }
+
   }
+
 }
 
+/**
+ * Função que executa o motor gráfico.
+ * 
+ * @param scenario  : define qual cenário será renderizado (recebido do arquivo main.c).
+ */
 void runEngine(short int scenario, char username[]) {
   configView();
 
@@ -482,7 +441,7 @@ void runEngine(short int scenario, char username[]) {
 
   /* Renderização do carro ("fixo"). */
   renderMainCar();
-  colisao();
+  collisionTreatment();
   
   if (!paused)
     glutPostRedisplay();
@@ -495,47 +454,36 @@ void runEngine(short int scenario, char username[]) {
  * @param x   : posição x do mouse na tela.
  * @param y   : posição y do mouse na tela.
  */
-void keyboard(unsigned char key, int x, int y)
-{
-  switch (key)
-  {
-  /* Vai para a pista à direita. */
-  case 'd':
-    if (!paused && !carAnimationEnabled && currentLane != RIGHT_LANE)
-    {
-      carAnimationEnabled = true;
-      animationSide = TO_RIGHT;
-    }
-    break;
+void keyboard(unsigned char key, int x, int y) {
+  
+  switch (key) {
+    /* Vai para a pista à direita. */
+    case 'd':
+      if (!paused && !carAnimationEnabled && currentLane != RIGHT_LANE) {
+        carAnimationEnabled = true;
+        animationSide = TO_RIGHT;
+      }
 
-  /* Vai para a pista à esquerda. */
-  case 'a':
-    if (!paused && !carAnimationEnabled && currentLane != LEFT_LANE)
-    {
-      carAnimationEnabled = true;
-      animationSide = TO_LEFT;
-    }
-    break;
+      break;
 
-  /* Pausa/despausa o jogo. */
-  case 'p':
-    paused = !paused;
-    break;
+    /* Vai para a pista à esquerda. */
+    case 'a':
+      if (!paused && !carAnimationEnabled && currentLane != LEFT_LANE) {
+        carAnimationEnabled = true;
+        animationSide = TO_LEFT;
+      }
 
-  /* Escolhe a perspectiva (câmera). */
-  case 'c':
-    perspective = !perspective;
+      break;
 
-    if (perspective)
-    {
-      camPosY = 20;
-      camPosZ = 200;
-    }
-    else
-    {
-      camPosY = 30;
-      camPosZ = 100;
-    }
+    /* Pausa/despausa o jogo. */
+    case 'p':
+      paused = !paused;
+      
+      break;
+
+    /* Escolhe a perspectiva (câmera). */
+    case 'c':
+      perspective = !perspective;
 
       if (perspective) {
         camPosY = 20;
@@ -545,16 +493,27 @@ void keyboard(unsigned char key, int x, int y)
         camPosZ = 100;
       }
 
-  /* Sai do jogo. */
-  case 'q':
-    savePoints();
-    glutExit();
-    exit(0);
-    break;
+      if (perspective) {
+        camPosY = 20;
+        camPosZ = 200;
+      } else {
+        camPosY = 30;
+        camPosZ = 100;
+      }
 
-  default:
-    printf("Tecla invalida pressionada.\n\n");
-    break;
+      break;
+
+    /* Sai do jogo. */
+    case 'q':
+      savePoints();
+      glutExit();
+      exit(0);
+      
+      break;
+
+    default:
+      printf("Tecla invalida pressionada.\n\n");
+      break;
   }
 
   glutPostRedisplay();
