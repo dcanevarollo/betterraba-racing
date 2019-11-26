@@ -14,7 +14,6 @@
 
 void setPositionElements();
 
-void collisionTreatment();
-
+void collisionTreatment(char const *username);
 
 #endif

@@ -14,18 +14,20 @@
 int collisionControl = 0;  // Define qual objeto do vetor de obstáculos será analisado na colisão.
 
 
-void collisionTreatment(char *username) {
+void collisionTreatment(char const *username) {
   int i;
+  
   Properties carProperties = getCarProperties();
   Properties *obstaclesProperties = getObstaclesProperties();
 
-  for (i = 0; i < 10; i++)                                                       
+  for (i = 0; i < 10; i++)
+  
     if (obstaclesProperties[i].collisionZ[0] < FIRST_POINT && obstaclesProperties[i].collisionZ[0] > LAST_POINT) {
       collisionControl = i;
 
       if (obstaclesProperties[collisionControl].lane == LEFT_LANE 
           && carProperties.collisionX[0] <= obstaclesProperties[collisionControl].collisionX[1])
-        savePoints(username);
+            savePoints(username);
 
       if (obstaclesProperties[collisionControl].lane == RIGHT_LANE 
           && carProperties.collisionX[1] >= obstaclesProperties[collisionControl].collisionX[0])
@@ -40,7 +42,7 @@ void collisionTreatment(char *username) {
           && carProperties.collisionX[1] >= obstaclesProperties[collisionControl].collisionX[0] 
           && carProperties.lane < 0)
         savePoints(username);
-    }
+    }                                                       
 }
 
 /** 

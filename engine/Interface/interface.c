@@ -2,11 +2,11 @@
 
 int points = 0;
 
-void savePoints(char userName[100]) {
+void savePoints(char const *userName) {
   FILE *file;
   char string[12];
   int line = 0;
-  
+
   char name[100];
   char point[20];
 
@@ -16,13 +16,13 @@ void savePoints(char userName[100]) {
   strcpy(player.name, userName);
   player.point = points;
 
-  file = fopen("../engine/Interface/ranking.txt", "a");
+  file = fopen("ranking.txt", "a");
     intToString(player.point, string);
     
     fprintf(file, "%s %s\n", player.name, string);
   fclose(file);
 
-  file = fopen("../engine/Interface/ranking.txt", "r");
+  file = fopen("ranking.txt", "r");
   
   int n;
   while (!feof(file)) {
