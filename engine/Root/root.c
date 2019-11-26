@@ -22,6 +22,7 @@ int camPosX = 0, camPosY = 20, camPosZ = 200;
 int camLookX = 0, camLookY = 10, camLookZ = 0;
 int camAxisX = 0, camAxisY = 1, camAxisZ = 0;
 
+char userName[100];
 
 void setPaused(bool value) {
   paused = value;
@@ -57,7 +58,7 @@ void configView() {
  * 
  * @param scenario  : define qual cenário será renderizado (recebido do arquivo main.c).
  */
-void runEngine(short int scenario, short int carColor, char username) {
+void runEngine(short int scenario, short int carColor, char username[100]) {
   configView();
 
   /* Definição das propriedades do carro (apenas na primeira renderização). */
@@ -68,19 +69,19 @@ void runEngine(short int scenario, short int carColor, char username) {
     setFirstRender(false);
   }
   
-
-  // setPlayerName(username);
+  strcpy(userName, username);
 
   /* Cenários e objetos a serem construídos. */
   toInfiniteAndBeyond(scenario);
 
-  /* Renderiza o contador de pontos. */
-  renderText(-14, 80, "Pontos: ");
-  renderPoints();
+  /* Renderia o contador de pontos*/
+  renderText(-15, 80, 0, "PONTOS: ");
+  renderBoxText();
 
   /* Renderização do carro ("fixo"). */
   renderMainCar(carColor);
-  collisionTreatment();
+
+  collisionTreatment(userName);
   
   if (!paused)
     glutPostRedisplay();
@@ -134,7 +135,6 @@ void keyboard(unsigned char key, int x, int y) {
 
     /* Sai do jogo. */
     case 'q':
-      savePoints();
       glutExit();
       exit(0);
       break;
