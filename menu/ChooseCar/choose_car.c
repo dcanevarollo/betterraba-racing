@@ -1,20 +1,25 @@
+/**
+ * @author Douglas Canevarollo
+ * Funções para escolha de carro no menu.
+ */
+
 #include "choose_car.h"
 
 
+/* Cores disponíveis para o carro principal. */
 #define GREEN 0
-#define RED 1
-#define BLUE 2
-#define YELLOW 3
-#define PURPLE 4
-#define LILAC 5
-#define ORANGE 6
+#define BLUE 1
+#define YELLOW 2
+#define PURPLE 3
+#define LILAC 4
+#define ORANGE 5
 
 
-short int currentColor = 0;
+short int currentColor = GREEN;  // Cor atual do carro exibido.
 
-float carAngle = 0;
+float carAngle = 0;  // Ângulo de exibição do carro (para sua rotação).
 
-int carAngleDivider = 0;
+int carAngleDivider = 0;  // Divisor inteiro do ângulo de rotação (para ser possível utilizar a função mod).
 
 
 short int getCurrentColor() {
@@ -26,14 +31,17 @@ void setCurrentColor(short int value) {
 }
 
 
+/**
+ * Constrói o carro principal com a cor escolhida.
+ * 
+ * @param color : cor escolhida.
+ * @param posX  : posição x de renderização.
+ * @param posZ  : posição -z de renderização.
+ */
 void buildMainCar(short int color, float posX, float posZ) {
   switch (color) {
     case GREEN:
       buildCar(green(), posX, posZ);
-      break;
-
-    case RED:
-      buildCar(red(), posX, posZ);
       break;
 
     case BLUE:
@@ -62,7 +70,14 @@ void buildMainCar(short int color, float posX, float posZ) {
   }
 }
 
+/**
+ * Exibe o menu (o carro girando lentamente).
+ */
 void showCarMenu() {
+  renderText(-5, 15, "ESCOLHA SEU CARRO");
+  renderText(-4, 13, "Escolher: -> ou <-");
+  renderText(-3, 11, "Avancar: PgUp");
+
   glPushMatrix();
 
   glRotatef(carAngle, 0, 1, 0);

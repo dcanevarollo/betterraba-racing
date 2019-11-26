@@ -10,6 +10,9 @@
 
 #include "../../objects/Car/car.h"
 
+#include "../../engine/Interface/interface.h"
+
+
 short int getCurrentColor();
 
 void setCurrentColor(short int value);

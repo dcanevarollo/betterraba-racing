@@ -15,6 +15,7 @@
 #include "../../scenarios/Florest/florest.h"
 
 #include "../../menu/ChooseCar/choose_car.h"
+#include "../../menu/ChooseMap/choose_map.h"
 
 #include "../Animation/animation.h"
 #include "../Collision/collision.h"
@@ -39,8 +40,6 @@ void defineCarProperties();
 void defineObstaclesProperties();
 
 void renderMainCar(short int carColor);
-
-void renderScenario(short int scenario, float renderizationPos);
 
 void renderObstacles();
 

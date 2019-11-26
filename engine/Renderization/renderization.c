@@ -131,40 +131,6 @@ void renderMainCar(short int carColor) {
 }
 
 /**
- * Cria o cenário de acordo com a escolha do jogador.
- * 
- * @param scenario          : define qual cenário será renderizado.
- * @param renderizationPos  : indica a posição em que a matriz do cenário será renderizada.
- */
-void renderScenario(short int scenario, float renderizationPos) {
-  glPushMatrix();
-
-  glTranslatef(0, 0, renderizationPos);
-
-  switch (scenario) {
-    case 0:
-      buildUrbanScenario();
-      break;
-
-    case 1:
-      buildDesertScenario();
-      break;
-
-    case 2:
-      buildFlorestScenario();
-      break;
-
-    default:
-      printf("Erro na inicializacao do cenario.\n\n");
-      glutExit();
-      exit(1);
-      break;
-  }
-
-  glPopMatrix();
-}
-
-/**
  * Trata a renderização dos obstáculos na pista. A distância em z e a faixa que aparecerão serão aleatórios. Cada pro-
  * priedade para cada obstáculo é uma posição do vetor de propriedades.
  */
