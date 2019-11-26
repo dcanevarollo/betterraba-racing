@@ -2,9 +2,14 @@
 
 
 #define CLOSE_LIMIT -300  // Limite de aproximação do carro com o horizonte da cena.
-#define SAFE_LIMIT 300  // Limite de segurança para criação de novos obstáculos.
+#define SAFE_LIMIT 200  // Limite de segurança para criação de novos obstáculos.
 #define SCENE_LIMIT 200  // Limite da cena (a partir de múltiplos deste são renderizados novos objetos).
 #define SCENE_HORIZON 400  // "Horizonte" imaginário da cena.
+#define OBSTACLE_INCREMENT 10  // Sempre adicionaremos 5 obstáculos por onda.
+#define MAX_INCREMENT 40  // Não produziremos mais de 50 obstáculos.
+
+
+void renderAllObstacles();
 
 
 Properties carProperties;  // Armazena as propriedades do carro principal.
@@ -21,6 +26,8 @@ float lastObstacleRendPosition;  // Posição do último obstáculo renderizado.
 float currentPositionHorizon = INIT_POS;  // posição atual do carro em relação ao horizonte da cena.
 float currentPositionObstacles = INIT_POS;  // posição atual do carro em relação ao último obstáculo renderizado.
 float difficulty = 1;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
+
+int obstaclesQuantity = 10;  // Quantidade de obstáculos renderizados.
 
 
 Properties getCarProperties() {
@@ -58,8 +65,8 @@ void setFirstRender(bool value) {
 void defineCarProperties() {
   carProperties.lane = MIDDLE_LANE;
   carProperties.distance = INIT_POS;
-  carProperties.collisionX[0] = MIDDLE_LANE - 1.5;
-  carProperties.collisionX[1] = MIDDLE_LANE + 1.5;
+  carProperties.collisionX[0] = -1.5;
+  carProperties.collisionX[1] = 1.5;
 }
 
 /**
@@ -74,9 +81,12 @@ void defineObstaclesProperties() {
 
   srand((unsigned) time(&seed));
 
-  obstaclesProperties = (Properties *) malloc(10 * sizeof(Properties));
+  if (!isFirstRender())
+    free(obstaclesProperties);
 
-  for (i = 0; i < 10; i++) {
+  obstaclesProperties = (Properties *) malloc(obstaclesQuantity * sizeof(Properties));
+
+  for (i = 0; i < obstaclesQuantity; i++) {
     lane = rand() % 3;
     distance = rand() % 30 + i * 50; // Os objetos ficarão mais distantes de acordo com sua posição i do vetor.
 
@@ -109,47 +119,13 @@ void defineObstaclesProperties() {
 /** 
  * Trata a renderização e animação do carro.
  */
-void renderMainCar() {
+void renderMainCar(short int carColor) {
   glPushMatrix();
 
   if (isAnimationEnabled())
     changeLanes(getAnimationSide());
 
-  buildCar(blue(), carProperties.lane, carProperties.distance);
-
-  glPopMatrix();
-}
-
-/**
- * Cria o cenário de acordo com a escolha do jogador.
- * 
- * @param scenario          : define qual cenário será renderizado.
- * @param renderizationPos  : indica a posição em que a matriz do cenário será renderizada.
- */
-void renderScenario(short int scenario, float renderizationPos) {
-  glPushMatrix();
-
-  glTranslatef(0, 0, renderizationPos);
-
-  switch (scenario) {
-    case 0:
-      buildUrbanScenario();
-      break;
-
-    case 1:
-      buildDesertScenario();
-      break;
-
-    case 2:
-      buildFlorestScenario();
-      break;
-
-    default:
-      printf("Erro na inicializacao do cenario.\n\n");
-      glutExit();
-      exit(1);
-      break;
-  }
+  buildMainCar(carColor, carProperties.lane, carProperties.distance);
 
   glPopMatrix();
 }
@@ -164,9 +140,9 @@ void renderObstacles() {
     defineObstaclesProperties();
 
     if (!firstRender)
-      obstaclesRendPosition = -lastObstacleRendPosition + SAFE_LIMIT;
+      obstaclesRendPosition = -SCENE_HORIZON;
 
-    lastObstacleRendPosition = obstaclesProperties[9].distance - obstaclesRendPosition;
+    lastObstacleRendPosition = obstaclesProperties[obstaclesQuantity - 1].distance - obstaclesRendPosition;
 
     refreshScene = false;
   }
@@ -174,24 +150,13 @@ void renderObstacles() {
   glPushMatrix();
 
   glTranslatef(0, 0, obstaclesRendPosition);
-
-  buildRandomCar(obstaclesProperties[0].lane, obstaclesProperties[0].distance);
-  buildStone(obstaclesProperties[1].lane, obstaclesProperties[1].distance);
-  buildBox(obstaclesProperties[2].lane, obstaclesProperties[2].distance);
-  buildTrafficCone(obstaclesProperties[3].lane, obstaclesProperties[3].distance);
-  buildRandomCar(obstaclesProperties[4].lane, obstaclesProperties[4].distance);
-  buildStone(obstaclesProperties[5].lane, obstaclesProperties[5].distance);
-  buildTrafficCone(obstaclesProperties[6].lane, obstaclesProperties[6].distance);
-  buildStone(obstaclesProperties[7].lane, obstaclesProperties[7].distance);
-  buildBox(obstaclesProperties[8].lane, obstaclesProperties[8].distance);
-  buildTrafficCone(obstaclesProperties[9].lane, obstaclesProperties[9].distance);
-
+  renderAllObstacles();
   
- glPopMatrix();
+  glPopMatrix();
  
- obstaclesRendPosition += difficulty + 0.1;
+  obstaclesRendPosition += difficulty + 0.1;
 
- setPositionElements();
+  setPositionElements();
 }
 
 /**
@@ -246,12 +211,40 @@ void toInfiniteAndBeyond(short int scenario) {
   /* A dificuldade aumentará a cada onda de obstáculos superados. */
   if (distanceToLastObstacle <= 0) {
     
-    if (difficulty < 1.36)
+    if (difficulty < 1.36) {
       difficulty += 0.08;
+      obstaclesQuantity = obstaclesQuantity ==  MAX_INCREMENT ? obstaclesQuantity : obstaclesQuantity + OBSTACLE_INCREMENT;
+    }
     
     refreshScene = true;
     currentPositionObstacles = 0;
   }
 
   renderObstacles();
+}
+
+/**
+ * Renderiza todos os obstáculos de uma onda.
+ */
+void renderAllObstacles() {
+  int k;
+
+  /* Serão renderizados blocos de 10 obstáculos. O limite de blocos é, naturalmente, a quantidade de obstáculos no vetor
+  dividido pelo tamanho do bloco (10). Na segunda onda, por exemplo, serão renderizados 20 obstáculos em 2 blocos de 
+  10 obstáculos. */
+  int limit = obstaclesQuantity/OBSTACLE_INCREMENT;
+  for (k = 0; k < limit; k++) {
+    int dozen = k * OBSTACLE_INCREMENT;
+
+    buildRandomCar(obstaclesProperties[dozen + 0].lane, obstaclesProperties[dozen + 0].distance);
+    buildStone(obstaclesProperties[dozen + 1].lane, obstaclesProperties[dozen + 1].distance);
+    buildBox(obstaclesProperties[dozen + 2].lane, obstaclesProperties[dozen + 2].distance);
+    buildTrafficCone(obstaclesProperties[dozen + 3].lane, obstaclesProperties[dozen + 3].distance);
+    buildRandomCar(obstaclesProperties[dozen + 4].lane, obstaclesProperties[dozen + 4].distance);
+    buildStone(obstaclesProperties[dozen + 5].lane, obstaclesProperties[dozen + 5].distance);
+    buildTrafficCone(obstaclesProperties[dozen + 6].lane, obstaclesProperties[dozen + 6].distance);
+    buildStone(obstaclesProperties[dozen + 7].lane, obstaclesProperties[dozen + 7].distance);
+    buildBox(obstaclesProperties[dozen + 8].lane, obstaclesProperties[dozen + 8].distance);
+    buildTrafficCone(obstaclesProperties[dozen + 9].lane, obstaclesProperties[dozen + 9].distance);
+  }
 }

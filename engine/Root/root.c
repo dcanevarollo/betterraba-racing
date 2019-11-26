@@ -32,6 +32,9 @@ void setPaused(bool value) {
  * Faz as configurações de câmera e perspectiva do frame.
  */
 void configView() {
+  /* Define a cor de fundo (o "céu"). */
+  glClearColor(204.0f/255.0f, 229.0f/255.0f,  1.0f, 1.0f);
+
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
@@ -55,7 +58,7 @@ void configView() {
  * 
  * @param scenario  : define qual cenário será renderizado (recebido do arquivo main.c).
  */
-void runEngine(short int scenario, char username[100]) {
+void runEngine(short int scenario, short int carColor, char username[100]) {
   configView();
 
   /* Definição das propriedades do carro (apenas na primeira renderização). */
@@ -76,7 +79,8 @@ void runEngine(short int scenario, char username[100]) {
   renderBoxText();
 
   /* Renderização do carro ("fixo"). */
-  renderMainCar();
+  renderMainCar(carColor);
+
   collisionTreatment(userName);
   
   if (!paused)
