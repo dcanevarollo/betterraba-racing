@@ -25,7 +25,7 @@
 
 void setPaused(bool value);
 
-void runEngine(short int scenario, char username);
+void runEngine(short int scenario, char username[100]);
 
 void keyboard(unsigned char key, int x, int y);
 

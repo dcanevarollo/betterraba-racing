@@ -14,10 +14,10 @@ void setPlayerName(char *playerName);
 
 void gameOver();
 
-void renderPoints();
+void renderBoxText();
 
 void savePoints();
 
-void renderText(int x, int y, char *string);
+void renderText(int x, int y, int z, char *string);
 
 #endif

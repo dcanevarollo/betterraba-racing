@@ -17,7 +17,7 @@ void reverse(char s[]) {
     }
 }
 
-void conversion(int n, char s[]) {
+void intToString(int n, char s[]) {
     int i, sign;
 
     if ((sign = n) < 0)  
