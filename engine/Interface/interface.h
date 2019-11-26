@@ -14,7 +14,7 @@ void setPlayerName(char *playerName);
 
 void gameOver();
 
-void savePoints();
+void savePoints(char const *userName);
 
 void renderPoints();
 

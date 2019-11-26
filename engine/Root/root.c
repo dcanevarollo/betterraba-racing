@@ -58,7 +58,7 @@ void configView() {
  * 
  * @param scenario  : define qual cenário será renderizado (recebido do arquivo main.c).
  */
-void runEngine(short int scenario, short int carColor, char username[100]) {
+void runEngine(short int scenario, short int carColor, char const *username) {
   configView();
 
   /* Definição das propriedades do carro (apenas na primeira renderização). */
@@ -73,7 +73,7 @@ void runEngine(short int scenario, short int carColor, char username[100]) {
 
   /* Cenários e objetos a serem construídos. */
   toInfiniteAndBeyond(scenario);
-
+  
   /* Renderia o contador de pontos*/
   renderPoints();
 
