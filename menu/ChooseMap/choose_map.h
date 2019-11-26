@@ -22,7 +22,7 @@ void setCurrentMap(short int value);
 
 void renderScenario(short int scenario, float renderizationPos);
 
-void showMapMenu();
+void runMapMenu();
 
 
 #endif

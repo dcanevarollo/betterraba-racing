@@ -52,13 +52,29 @@ void renderScenario(short int scenario, float renderizationPos) {
   glPopMatrix();
 }
 
+/**
+ * Exibe o menu de escolha de mapa (mapa estático).
+ */
+void runMapMenu() {
+  /* Define a cor de fundo (o "céu"). */
+  glClearColor(204.0f/255.0f, 229.0f/255.0f,  1.0f, 1.0f);
 
-void showMapMenu() {
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(45, 1, 1, 500);
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
+  gluLookAt(0, 20, 200, 0, 10, 0, 0, 1, 0);
+
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
   renderText(-15, 80, 0, "ESCOLHA SEU MAPA", text(), LARGE);
   renderText(-9, 75, 0, "Escolher: -> ou <-", text(), REGULAR);
   renderText(-8, 70, 0, "Avancar: PgUp", text(), REGULAR);
   
-  renderTextBox(20, 90, -1, -20, 65);
+  renderTextBox(20, 90, -20, 65, -1);
 
   renderScenario(currentMap, 0);
 }

@@ -73,7 +73,21 @@ void buildMainCar(short int color, float posX, float posZ) {
 /**
  * Exibe o menu (o carro girando lentamente).
  */
-void showCarMenu() {
+void runCarMenu() {
+  /* Define a cor de fundo (fundo escuro). */
+  glClearColor(32.0f/255.0f, 32.0f/255.0f,  32.0/255.0f, 1.0f);
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(45, 1, 1, 70);
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
+  gluLookAt(0, 20, 40, 0, 0, 0, 0, 1, 0);
+
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
   renderText(-3,15, 0, "ESCOLHA SEU CARRO", text(), LARGE);
   renderText(-1.8, 14, 0, "Escolher: -> ou <-", text(), REGULAR);
   renderText(-1.5, 13, 0, "Avancar: PgUp", text(), REGULAR);

@@ -28,8 +28,8 @@ void buildUrbanScenario() {
 
   glVertex3f(STREET_EDGE, 0, -500);
   glVertex3f(STREET_EDGE, 0, 150);
-  glVertex3f(40, 0, 150);
-  glVertex3f(40, 0, -500);
+  glVertex3f(100, 0, 150);
+  glVertex3f(100, 0, -500);
 
   glEnd();
 
@@ -37,8 +37,8 @@ void buildUrbanScenario() {
 
   glVertex3f(-STREET_EDGE, 0, -500);
   glVertex3f(-STREET_EDGE, 0, 150);
-  glVertex3f(-40, 0, 150);
-  glVertex3f(-40, 0, -500);
+  glVertex3f(-100, 0, 150);
+  glVertex3f(-100, 0, -500);
 
   glEnd();
 

@@ -25,7 +25,7 @@ float obstaclesRendPosition = 0;  // Posição de renderização dos obstáculos
 float lastObstacleRendPosition;  // Posição do último obstáculo renderizado.
 float currentPositionHorizon = INIT_POS;  // posição atual do carro em relação ao horizonte da cena.
 float currentPositionObstacles = INIT_POS;  // posição atual do carro em relação ao último obstáculo renderizado.
-float difficulty = 1;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
+float difficulty = 0.5;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
 
 int obstaclesQuantity = 10;  // Quantidade de obstáculos renderizados.
 
@@ -211,8 +211,8 @@ void toInfiniteAndBeyond(short int scenario) {
   /* A dificuldade aumentará a cada onda de obstáculos superados. */
   if (distanceToLastObstacle <= 0) {
     
-    if (difficulty < 1.36) {
-      difficulty += 0.08;
+    if (difficulty <= 1.40) {
+      difficulty += 0.09;
       obstaclesQuantity = obstaclesQuantity ==  MAX_INCREMENT ? obstaclesQuantity : obstaclesQuantity + OBSTACLE_INCREMENT;
     }
     

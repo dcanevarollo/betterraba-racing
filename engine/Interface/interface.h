@@ -18,7 +18,7 @@ void savePoints();
 
 void renderPoints();
 
-void renderTextBox(float x1, float y1, float z, float x2, float y2);
+void renderTextBox(float x1, float y1, float x2, float y2, float z);
 
 void renderText(float x, float y, float z, char *string, Color color, short int size);
 

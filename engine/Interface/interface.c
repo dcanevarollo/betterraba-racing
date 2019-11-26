@@ -72,7 +72,7 @@ void gameOver(Ranking player, Ranking rank[5], int size) {
 
   char points[12], collocation[5];
 
-  renderTextBox(10, 50, 150, -10, -10);
+  renderTextBox(10, 50, -10, -10, 150);
 
   renderText(-2, 29, 170, "RANKING", text(), LARGE);
   renderText(-4, 28, 170, "Colocacao", text(), REGULAR);
@@ -103,13 +103,13 @@ void renderPoints() {
 
   renderText(7, 80, 0, stringPts, text(), LARGE);
 
-  renderTextBox(20, 90, -1, -20, 75);
+  renderTextBox(20, 90, -20, 75, -1);
 }
 
 /**
  * Função responsável por renderizar a textos em um quadrado.
  */
-void renderTextBox(float x1, float y1, float z, float x2, float y2) {
+void renderTextBox(float x1, float y1, float x2, float y2, float z) {
   Color quadColor = darkGrey();
   glColor3ub(quadColor.red, quadColor.green, quadColor.blue);
 

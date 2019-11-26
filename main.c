@@ -12,6 +12,8 @@
 
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include <GL/freeglut.h>
 
 #include "./utils/Defines/defines.h"
@@ -127,48 +129,6 @@ void specialKeyboard(int key, int x, int y) {
 
     glutPostRedisplay();
   }
-}
-
-/**
- * Inicia a renderização do menu de escolha do carro principal.
- */
-void runCarMenu() {
-  /* Define a cor de fundo (fundo escuro). */
-  glClearColor(32.0f/255.0f, 32.0f/255.0f,  32.0/255.0f, 1.0f);
-
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(45, 1, 1, 70);
-
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-
-  gluLookAt(0, 20, 40, 0, 0, 0, 0, 1, 0);
-
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  showCarMenu();
-}
-
-/**
- * Inicia a renderização do menu de escolha do mapa de jogo.
- */
-void runMapMenu() {
-  /* Define a cor de fundo (o "céu"). */
-  glClearColor(204.0f/255.0f, 229.0f/255.0f,  1.0f, 1.0f);
-
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(45, 1, 1, 500);
-
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-
-  gluLookAt(0, 20, 200, 0, 10, 0, 0, 1, 0);
-
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  showMapMenu();
 }
 
 /**

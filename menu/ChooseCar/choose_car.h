@@ -19,7 +19,7 @@ void setCurrentColor(short int value);
 
 void buildMainCar(short int color, float posX, float posZ);
 
-void showCarMenu();
+void runCarMenu();
 
 
 #endif
