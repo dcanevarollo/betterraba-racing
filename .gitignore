@@ -51,6 +51,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# Ignore the test files
+# Ignore some temp files
 tests/*.bat
 tests/*.txt
+/*.txt

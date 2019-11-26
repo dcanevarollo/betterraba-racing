@@ -6,10 +6,6 @@
 #define true 1
 #define false 0
 
-#define URBAN 0  // Define o cenário urbano.
-#define DESERT 1  // Define o cenário desértico.
-#define FLOREST 2  // Define o cenário florestal.
-
 #define MIDDLE_LANE 0  // Posição em x da faixa central.
 #define RIGHT_LANE 12  // Posição em x da faixa da direita.
 #define LEFT_LANE -12  // Posição em x da faixa da esquerda.

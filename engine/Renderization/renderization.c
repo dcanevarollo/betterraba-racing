@@ -119,47 +119,13 @@ void defineObstaclesProperties() {
 /** 
  * Trata a renderização e animação do carro.
  */
-void renderMainCar() {
+void renderMainCar(short int carColor) {
   glPushMatrix();
 
   if (isAnimationEnabled())
     changeLanes(getAnimationSide());
 
-  buildCar(blue(), carProperties.lane, carProperties.distance);
-
-  glPopMatrix();
-}
-
-/**
- * Cria o cenário de acordo com a escolha do jogador.
- * 
- * @param scenario          : define qual cenário será renderizado.
- * @param renderizationPos  : indica a posição em que a matriz do cenário será renderizada.
- */
-void renderScenario(short int scenario, float renderizationPos) {
-  glPushMatrix();
-
-  glTranslatef(0, 0, renderizationPos);
-
-  switch (scenario) {
-    case 0:
-      buildUrbanScenario();
-      break;
-
-    case 1:
-      buildDesertScenario();
-      break;
-
-    case 2:
-      buildFlorestScenario();
-      break;
-
-    default:
-      printf("Erro na inicializacao do cenario.\n\n");
-      glutExit();
-      exit(1);
-      break;
-  }
+  buildMainCar(carColor, carProperties.lane, carProperties.distance);
 
   glPopMatrix();
 }
