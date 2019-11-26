@@ -49,4 +49,6 @@ Color lightOrange();
 
 Color darkRed();
 
+Color text();
+
 #endif

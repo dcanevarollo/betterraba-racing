@@ -74,13 +74,15 @@ void buildMainCar(short int color, float posX, float posZ) {
  * Exibe o menu (o carro girando lentamente).
  */
 void showCarMenu() {
-  renderText(-5, 15, "ESCOLHA SEU CARRO");
-  renderText(-4, 13, "Escolher: -> ou <-");
-  renderText(-3, 11, "Avancar: PgUp");
+  renderText(-3,15, 0, "ESCOLHA SEU CARRO", text(), LARGE);
+  renderText(-1.8, 14, 0, "Escolher: -> ou <-", text(), REGULAR);
+  renderText(-1.5, 13, 0, "Avancar: PgUp", text(), REGULAR);
 
   glPushMatrix();
 
   glRotatef(carAngle, 0, 1, 0);
+
+  glTranslatef(0, -5, 0);
   buildMainCar(currentColor, 0, 0);
 
   glPopMatrix();

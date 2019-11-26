@@ -14,10 +14,12 @@ void setPlayerName(char *playerName);
 
 void gameOver();
 
-void renderBoxText();
-
 void savePoints();
 
-void renderText(int x, int y, int z, char *string);
+void renderPoints();
+
+void renderTextBox(float x1, float y1, float z, float x2, float y2);
+
+void renderText(float x, float y, float z, char *string, Color color, short int size);
 
 #endif

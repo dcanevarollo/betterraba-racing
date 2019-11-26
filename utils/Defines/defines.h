@@ -15,5 +15,8 @@
 
 #define INIT_POS -150  // Posição inicial do carro. Negativa pois a função de translação para os carros inverte o sinal.
 
+#define LARGE 18  // Tamanho de fonte grande.
+#define REGULAR 12  // Tamanho de fonte normal.
+
 
 #endif

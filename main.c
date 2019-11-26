@@ -4,11 +4,11 @@
  */
 
 
-#define MAX_COLOR 5
-#define MIN_COLOR 0
+#define MAX_COLOR 5  // Índice máximo de cores.
+#define MIN_COLOR 0  // Índice mínimo de cores.
 
-#define MAX_MAP 2
-#define MIN_MAP 0
+#define MAX_MAP 2  // Índice máximo de mapas.
+#define MIN_MAP 0  // Índice mínimo de cores.
 
 
 #include <stdlib.h>
@@ -49,7 +49,7 @@ void display() {
   else if (mapMenuActive)
     runMapMenu();
   else if (engineActive)
-    runEngine(getCurrentMap(), getCurrentColor(), 't');
+    runEngine(getCurrentMap(), getCurrentColor(), "Douglas");
 
   glutSwapBuffers();
 }
@@ -68,6 +68,7 @@ void specialKeyboard(int key, int x, int y) {
     short int currentMap = getCurrentMap();
 
     switch (key) {
+      /* Escolhe a cor do carro ou o mapa. */
       case GLUT_KEY_RIGHT:
         if (carMenuActive) {
           if (currentColor < MAX_COLOR)
@@ -87,6 +88,7 @@ void specialKeyboard(int key, int x, int y) {
 
         break;
 
+      /* Escolhe a cor do carro ou o mapa. */
       case GLUT_KEY_LEFT:
         if (carMenuActive) {
           if (currentColor > MIN_COLOR)
@@ -106,6 +108,7 @@ void specialKeyboard(int key, int x, int y) {
 
         break;
 
+      /* Avança a tela. */
       case GLUT_KEY_UP:
         if (carMenuActive) {
           carMenuActive = false;
@@ -126,8 +129,11 @@ void specialKeyboard(int key, int x, int y) {
   }
 }
 
+/**
+ * Inicia a renderização do menu de escolha do carro principal.
+ */
 void runCarMenu() {
-  /* Define a cor de fundo. */
+  /* Define a cor de fundo (fundo escuro). */
   glClearColor(32.0f/255.0f, 32.0f/255.0f,  32.0/255.0f, 1.0f);
 
   glMatrixMode(GL_PROJECTION);
@@ -144,8 +150,11 @@ void runCarMenu() {
   showCarMenu();
 }
 
+/**
+ * Inicia a renderização do menu de escolha do mapa de jogo.
+ */
 void runMapMenu() {
-  /* Define a cor de fundo. */
+  /* Define a cor de fundo (o "céu"). */
   glClearColor(204.0f/255.0f, 229.0f/255.0f,  1.0f, 1.0f);
 
   glMatrixMode(GL_PROJECTION);
@@ -162,12 +171,15 @@ void runMapMenu() {
   showMapMenu();
 }
 
+/**
+ * Função principal de inicialização do jogo.
+ */
 int main(int argc, char **argv) {
   glutInit(&argc, argv);
 
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
-  glutInitWindowSize(800, 600);
+  glutInitWindowSize(1024, 768);
   glutInitWindowPosition(0, 0);
   glutCreateWindow("Betterraba Racing");
 

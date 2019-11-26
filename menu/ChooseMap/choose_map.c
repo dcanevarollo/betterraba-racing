@@ -54,5 +54,11 @@ void renderScenario(short int scenario, float renderizationPos) {
 
 
 void showMapMenu() {
+  renderText(-15, 80, 0, "ESCOLHA SEU MAPA", text(), LARGE);
+  renderText(-9, 75, 0, "Escolher: -> ou <-", text(), REGULAR);
+  renderText(-8, 70, 0, "Avancar: PgUp", text(), REGULAR);
+  
+  renderTextBox(20, 90, -1, -20, 65);
+
   renderScenario(currentMap, 0);
 }

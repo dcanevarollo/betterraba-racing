@@ -86,3 +86,7 @@ Color lightOrange() {
 Color darkRed() {
   return construtor(153, 0, 0);
 }
+
+Color text() {
+  return construtor(224, 224, 224);
+}
