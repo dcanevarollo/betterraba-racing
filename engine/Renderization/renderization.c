@@ -34,7 +34,6 @@ float difficulty = 0.5;  // Dificuldade do jogo. Incrementada a cada superação
 
 int obstaclesQuantity = 10;  // Quantidade de obstáculos renderizados.
 
-
 Properties getCarProperties() {
   return carProperties;
 }
@@ -140,8 +139,8 @@ void renderMainCar(short int carColor) {
 }
 
 /**
- * Trata a renderização dos obstáculos na pista. A distância em z e a faixa que aparecerão serão aleatórios. Cada pro-
- * priedade para cada obstáculo é uma posição do vetor de propriedades.
+ * Trata a renderização dos obstáculos na pista. A distância em z e a faixa que aparecerão serão aleatórios. 
+ * Cada propriedade para cada obstáculo é uma posição do vetor de propriedades.
  */
 void renderObstacles() {
   /* Define as propriedades dos obstáculos a serem criados. */
@@ -220,7 +219,9 @@ void toInfiniteAndBeyond(short int scenario) {
   /* A dificuldade aumentará a cada onda de obstáculos superados. */
   if (distanceToLastObstacle <= 0) {
     
-    if (difficulty <= 1.40) {
+    /* Só incrementa a dificuldade caso ela não atinja o limite, 
+        para deixar o jogo não impossível. */
+    if (difficulty <= 3) {
       difficulty += 0.09;
       obstaclesQuantity = obstaclesQuantity ==  MAX_INCREMENT ? obstaclesQuantity : obstaclesQuantity + OBSTACLE_INCREMENT;
     }

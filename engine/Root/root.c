@@ -44,18 +44,21 @@ void configView() {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-  /* Faz a escolha da projeção. */
-  if (perspective)
-    gluPerspective(45, 1, 1, VIEW_DISTANCE);
-  else
-    glOrtho(-40, 40, -50, 20, -250, 500);
+  /* Se o jogo não estiver finalizado, o usuário pode mudar a câmera. */
+  if (finished == false) {
+    /* Faz a escolha da projeção. */
+    if (perspective)
+      gluPerspective(45, 1, 1, VIEW_DISTANCE);
+    else
+      glOrtho(-40, 40, -50, 20, -250, 500);
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
-  gluLookAt(camPosX, camPosY, camPosZ, camLookX, camLookY, camLookZ, camAxisX, camAxisY, camAxisZ);
+    gluLookAt(camPosX, camPosY, camPosZ, camLookX, camLookY, camLookZ, camAxisX, camAxisY, camAxisZ);
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  }
 }
 
 
