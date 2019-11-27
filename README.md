@@ -39,5 +39,8 @@ Agora que o carro já foi escolhido e o jogador selecionou o mapa desejado, est�
 - Pausar o jogo: **P**
 - Sair do jogo: **Q**
 
+### Visualizando o ranking
+Caso você colida com algum obstáculo, o jogo será encerrado. Para visualizar sua colocação no ranking, pressione a teclao *Enter*. Em seguida, você será redirecionado para a tela de exibição de ranking, onde é possível visualizar sua colocação e os jogadores com as melhores pontuações.
+
 ### Desenvolvido com amor e carinho por:
 [Douglas Canevarollo](https://github.com/dcanevarollo)  /  [Douglas Brandão](https://github.com/douglasbrandao21)  /  [Gabriel Andrey](https://github.com/gandrey77) /  [Rafael Fernandez](https://github.com/rafaelfernandezcampos)
