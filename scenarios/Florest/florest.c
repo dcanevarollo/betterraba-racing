@@ -12,7 +12,7 @@ void buildFlorestScenario() {
     buildFlorestFloor();
 
     glPushMatrix();
-        glTranslatef(35, 0, -25);
+        glTranslatef(35, 0, 225);
         buildPineTree();
         glTranslatef(0, 0, -25);
         buildRoundBush();
@@ -75,7 +75,7 @@ void buildFlorestScenario() {
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(-35, 0, -25);
+        glTranslatef(-35, 0, 225);
         buildPineTree();
         glTranslatef(0, 0, -25);
         buildRoundBush();

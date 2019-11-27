@@ -6,7 +6,6 @@
 #include "interface.h"
 
 
-
 char *playerName;
 
 Ranking playerRank;
