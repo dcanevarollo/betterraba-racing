@@ -12,7 +12,7 @@ void buildDesertScenario() {
     buildDesertFloor();
 
     glPushMatrix();
-        glTranslatef(25, 0, 120);
+        glTranslatef(25, 0, -100);
         buildCactus();
         glTranslatef(50, 0, -100);
         buildSandDune();
@@ -35,7 +35,7 @@ void buildDesertScenario() {
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(-25, 0, 120);
+        glTranslatef(-25, 0, -100);
         buildCactus();
         glTranslatef(-50, 0, -100);
         buildSandDune();

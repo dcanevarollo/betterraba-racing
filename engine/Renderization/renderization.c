@@ -222,7 +222,7 @@ void toInfiniteAndBeyond(short int scenario) {
     /* Só incrementa a dificuldade caso ela não atinja o limite, 
         para deixar o jogo não impossível. */
     if (difficulty <= 3) {
-      difficulty += 0.09;
+      difficulty += 0.2;
       obstaclesQuantity = obstaclesQuantity ==  MAX_INCREMENT ? obstaclesQuantity : obstaclesQuantity + OBSTACLE_INCREMENT;
     }
     
