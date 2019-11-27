@@ -28,17 +28,14 @@ void collisionTreatment(char const *username, bool perspective) {
       if (obstaclesProperties[collisionControl].lane == LEFT_LANE 
           && carProperties.collisionX[0] <= obstaclesProperties[collisionControl].collisionX[1])
         gameOver(username, perspective);
-
-      if (obstaclesProperties[collisionControl].lane == RIGHT_LANE 
+      else if (obstaclesProperties[collisionControl].lane == RIGHT_LANE 
           && carProperties.collisionX[1] >= obstaclesProperties[collisionControl].collisionX[0])
         gameOver(username, perspective);
-
-      if (obstaclesProperties[collisionControl].lane == MIDDLE_LANE 
+      else if (obstaclesProperties[collisionControl].lane == MIDDLE_LANE 
           && carProperties.collisionX[0] <= obstaclesProperties[collisionControl].collisionX[1] 
           && carProperties.lane >= 0)  // Indo para a direita.
         gameOver(username, perspective);
-
-      if (obstaclesProperties[collisionControl].lane == MIDDLE_LANE 
+      else if (obstaclesProperties[collisionControl].lane == MIDDLE_LANE 
           && carProperties.collisionX[1] >= obstaclesProperties[collisionControl].collisionX[0] 
           && carProperties.lane < 0)
         gameOver(username, perspective);
