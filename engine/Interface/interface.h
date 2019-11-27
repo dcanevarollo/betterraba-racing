@@ -16,7 +16,7 @@ void gameOver();
 
 void savePoints(char const *userName);
 
-void renderPoints();
+void renderPoints(bool perspective);
 
 void renderTextBox(float x1, float y1, float x2, float y2, float z);
 

@@ -19,7 +19,7 @@ void buildDesertScenario() {
         buildSandDune();
         glTranslatef(-50, 2, -100);
         buildDesertHay();
-        glTranslatef(0, 0, -100);
+        glTranslatef(0, -2, -100);
         buildCactus();
         glTranslatef(50, 0, -100);
         buildSandDune();
@@ -29,7 +29,7 @@ void buildDesertScenario() {
         buildSandDune();
         glTranslatef(-50, 2, -100);
         buildDesertHay();
-        glTranslatef(0, 0, -100);
+        glTranslatef(0, -2, -100);
         buildCactus();
         glTranslatef(50, 0, -100);
         buildSandDune();
@@ -42,7 +42,7 @@ void buildDesertScenario() {
         buildSandDune();
         glTranslatef(50, 2, -100);
         buildDesertHay();
-        glTranslatef(0, 0, -100);
+        glTranslatef(0, -2, -100);
         buildCactus();
         glTranslatef(-50, 0, -100);
         buildSandDune();
@@ -52,7 +52,7 @@ void buildDesertScenario() {
         buildSandDune();
         glTranslatef(50, 2, -100);
         buildDesertHay();
-        glTranslatef(0, 0, -100);
+        glTranslatef(0, -2, -100);
         buildCactus();
         glTranslatef(-50, 0, -100);
         buildSandDune();

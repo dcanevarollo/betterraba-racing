@@ -75,7 +75,7 @@ void runEngine(short int scenario, short int carColor, char const *username) {
   toInfiniteAndBeyond(scenario);
   
   /* Renderia o contador de pontos*/
-  renderPoints();
+  renderPoints(perspective);
 
   /* Renderização do carro ("fixo"). */
   renderMainCar(carColor);
