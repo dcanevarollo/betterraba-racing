@@ -1,6 +1,6 @@
 /**
  * @author Douglas Canevarollo, Rafel Campos, Gabriel Andrey e Douglas Brandão.
- * Arquivo principal do jogo.
+ * Arquivo principal do jogo Betterraba Racing.
  */
 
 

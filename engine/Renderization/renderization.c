@@ -1,3 +1,8 @@
+/**
+ * Funções gerais de renderizações.
+ */
+
+
 #include "renderization.h"
 
 

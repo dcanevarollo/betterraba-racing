@@ -1,7 +1,6 @@
 #include "trees.h"
 
 /**
- * @author Rafael Campos
  * Arquivo que define os métodos para construir árvores, arbustos, cacto e feno do deserto. 
  */
 

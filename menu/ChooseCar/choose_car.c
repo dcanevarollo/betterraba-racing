@@ -1,5 +1,4 @@
 /**
- * @author Douglas Canevarollo
  * Funções para escolha de carro no menu.
  */
 

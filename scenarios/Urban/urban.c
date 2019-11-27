@@ -10,7 +10,6 @@ void createAllBuildings();
 
 
 /**
- * @author Douglas Canevarollo
  * Cria o cenário urbano do frame renderizado.
  */
 void buildUrbanScenario() {
@@ -49,7 +48,6 @@ void buildUrbanScenario() {
 }
 
 /**
- * @author Douglas Canevarollo
  * Cria e posiciona um prédio no cenário.
  * 
  * @param leftSidewalk  : caso verdadeiro, o prédio será posicionado na calçada esquerda. Caso falso, na direita.

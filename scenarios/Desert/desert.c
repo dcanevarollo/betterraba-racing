@@ -1,7 +1,6 @@
 #include "desert.h"
 
 /**
- * @author Rafael Campos
  * Arquivo que define o método para construir a pista Deserto. 
  */
 

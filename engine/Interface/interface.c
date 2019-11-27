@@ -1,5 +1,4 @@
 /**
- * @author Rafael Campos e Douglas Brandão
  * Arquivo com as funções de interface do usuário.
  */
 

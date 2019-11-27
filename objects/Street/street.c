@@ -1,7 +1,6 @@
 #include "street.h"
 
 /**
- * @author Rafael Campos
  * Arquivo que define os métodos para construir a rua. 
  */
 

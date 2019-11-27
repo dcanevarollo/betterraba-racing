@@ -1,3 +1,8 @@
+/**
+ * Funções que conduzem as animações dos objetos do jogo.
+ */
+
+
 #include "animation.h"
 
 

@@ -1,7 +1,6 @@
 #include "car.h"
 
 /**
- * @author Rafael Campos
  * Função de criação dos objetos que modelam os carros.
  * 
  * @param color   : cor do carro a ser criado.

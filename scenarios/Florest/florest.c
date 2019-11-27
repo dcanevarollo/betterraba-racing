@@ -1,7 +1,6 @@
 #include "florest.h"
 
 /**
- * @author Rafael Campos
  * Arquivo que define o método para construir a pista floresta. 
  */
 

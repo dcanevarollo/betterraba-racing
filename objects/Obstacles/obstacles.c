@@ -6,7 +6,6 @@
 #define CONE_BASE 1.5
 
 /**
- * @author Douglas Canevarollo
  * Arquivo responsável por criar os obstáculos nas pistas.
  */
 

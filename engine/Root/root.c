@@ -1,6 +1,5 @@
 /**
- * @author Douglas Canevarollo
- * Motor gráfico do jogo.
+ * Motor gráfico principal do jogo.
  */
 
 #include "root.h"

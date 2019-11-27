@@ -1,5 +1,4 @@
 /***
- * @author Gabriel Andrey
  * Aqui deverão ser realizados os testes dos objetos e cenários desenvolvidos.
  */
 

@@ -3,7 +3,6 @@
 #define WINDOW_SIZE 2
 
 /**
- * @author Douglas Canevarollo
  * Cria um objeto que simula um prédio para uma das pistas.
  * 
  * @param color       : cor do prédio a ser construído.

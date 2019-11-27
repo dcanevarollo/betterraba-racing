@@ -1,5 +1,4 @@
 /**
- * @author Gabriel Andrey
  * Arquivo que contém as funções para controlar as colisões do jogo.
  */
 

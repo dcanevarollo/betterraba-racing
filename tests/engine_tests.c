@@ -1,5 +1,4 @@
 /**
- * @author Douglas Canevarollo
  * Teste de motor gráfico.
  */
 

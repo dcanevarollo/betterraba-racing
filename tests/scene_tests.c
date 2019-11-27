@@ -1,5 +1,4 @@
 /**
- * @author Rafael Campos
  * Aqui deverão ser realizados os testes dos cenários desenvolvidos.
  */
 

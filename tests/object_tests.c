@@ -1,5 +1,4 @@
 /**
- * @author Douglas Canevarollo
  * Aqui deverão ser realizados os testes dos objetos e cenários desenvolvidos.
  */
 
