@@ -15,7 +15,11 @@ Ranking *ranking;
 int points = 0;
 int rankingSize;
 
-
+/* 
+* Função que salva os pontos do jogador no arquivo ranking,
+* monta o vetor de 5 posições com os jogadores com maior pontuação e
+* colocar na struct Ranking playerRank as informações do jogador.
+*/
 void savePoints() {
   FILE *rankingFile;
   char stringPts[12];
@@ -29,6 +33,7 @@ void savePoints() {
   strcpy(playerRank.name, playerName);
   playerRank.point = points;
 
+  /* Salva o nome e os pontos do jogador no arquivo ranking.txt */
   rankingFile = fopen("./ranking.txt", "a");
     intToString(playerRank.point, stringPts);
     
@@ -37,6 +42,7 @@ void savePoints() {
 
   rankingFile = fopen("./ranking.txt", "r");
   
+  /* Conta quantas linhas tem no arquivo. */
   while (!feof(rankingFile)) {
     fscanf(rankingFile, "%s %s", name, point);
     lineCounter++;
@@ -47,6 +53,7 @@ void savePoints() {
   rankingSize = lineCounter - 1;
   ranking = (Ranking *) malloc(rankingSize * sizeof(Ranking));
   
+  /* Pega todas as linhas do arquivo e coloca no vetor ranking. */
   int i = 0;
   while (!feof(rankingFile)) {
     fscanf(rankingFile, "%s %d", ranking[i].name, &ranking[i].point);
@@ -57,6 +64,8 @@ void savePoints() {
 
   int k, j; 
   Ranking tempRank;
+  /* Ordena o vetor ranking, em ordem decrescente. 
+     Assim os 5 primeiros, ou seja, com as maiores pontuações estarão no começo do vetor. */
   for (k = 0; k < rankingSize; k++)
     for (j = 0; j < rankingSize - k; j++)
       if (ranking[j].point < ranking[j + 1].point) {
@@ -70,6 +79,7 @@ void savePoints() {
           strcpy(ranking[j + 1].name, tempRank.name);
       }
 
+  /* Coloca a colocação de cada jogador. */
   for (j = 0; j < rankingSize && j < 5; j++)
     ranking[j].collocation = j + 1;
 
@@ -77,6 +87,11 @@ void savePoints() {
     rankingSize = 5;
 }
 
+/**
+ * Função que mostra a mensagem "Game Over" e chama a função de salvar os pontos no arquivo txt.
+ * @param playerName : variável que contém o nome do jogador.
+ * @param perspective : variável que define a câmera perspectiva ou ortográfica.
+ */
 void gameOver(const char *playerName, bool perspective) {
   savePoints();
 
@@ -96,6 +111,9 @@ void gameOver(const char *playerName, bool perspective) {
   }
 }
 
+/*
+* Função que mostra o ranking final.
+*/
 void showRanking() {
   /* Define a cor de fundo (fundo escuro). */
   glClearColor(32.0f/255.0f, 32.0f/255.0f,  32.0/255.0f, 1.0f);
@@ -113,6 +131,7 @@ void showRanking() {
 
   char points[12], collocation[5];
 
+  /* Mostra na tela o "cabeçalho" do ranking. */
   renderText(-0.5, 11, 0, "TOP 5", text(), LARGE);
   renderText(-4, 9, 0, "COLOCACAO", text(), REGULAR);
   renderText(0, 9, 0, "NOME", text(), REGULAR);
@@ -120,6 +139,7 @@ void showRanking() {
   
   int i;
   int j = 8;
+  /* Percorre o vetor rank e mostra os 5 primeiros colocados. */
   for (i = 0; i < rankingSize; i++, j -= 2) {
     intToString(ranking[i].collocation, collocation);
     intToString(ranking[i].point, points);
@@ -130,19 +150,29 @@ void showRanking() {
   }
 
   j -= 2;
+  /* Mostra o cabeçalho das informações do jogador. */
   renderText(-1, j, 0, "JOGADOR", text(), LARGE);
   renderText(-2, j - 2, 0, "NOME", text(), REGULAR);
   renderText(2, j - 2, 0, "PONTOS", text(), REGULAR);
 
   intToString(playerRank.point, points);
 
+  /* Mostra o nome e a pontuação do jogador. */
   renderText(-2, j - 3, 0, playerRank.name, text(), REGULAR);
   renderText(2, j - 3, 0, points, text(), REGULAR);
 }
 
+/**
+ * Função responsável por renderizar os pontos do jogador, 
+ * tanto em pespectiva quanto ortográfica.
+ * @param perspectiva : variável booleano que define a perspectiva.
+ * @param paused : variável que define se o jogo está pausado ou não.
+ */
 void renderPoints(bool perspective, bool paused) {
   char stringPts[12];
 
+  /*  Se o jogo não estiver pausado, 
+  *   incrementa a pontuação do jogador e mostra na tela. */
   if (!paused)
     points++;
 
@@ -164,6 +194,8 @@ void renderPoints(bool perspective, bool paused) {
 
 /**
  * Função responsável por renderizar uma caixa de textos.
+ * @param x1, @param y1,  @param x2, @param y2 e @param z : são os pontos que compõe
+ * a caixa de texto em que os textos estão sendo exibidos.
  */
 void renderTextBox(float x1, float y1, float x2, float y2, float z) {
   Color quadColor = darkGrey();
