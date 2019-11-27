@@ -6,7 +6,8 @@ void savePoints(char const *userName) {
   FILE *file;
   char string[12];
   int line = 0;
-
+  int size = 0;
+  
   char name[100];
   char point[20];
 
@@ -16,22 +17,23 @@ void savePoints(char const *userName) {
   strcpy(player.name, userName);
   player.point = points;
 
-  file = fopen("ranking.txt", "a");
+  file = fopen("./ranking.txt", "a");
     intToString(player.point, string);
     
     fprintf(file, "%s %s\n", player.name, string);
   fclose(file);
 
-  file = fopen("ranking.txt", "r");
+  file = fopen("./ranking.txt", "r");
   
   int n;
   while (!feof(file)) {
       fscanf(file, "%s %s", name, point);
       line++;
   }
+
   rewind(file);
   
-  int size = line - 1;
+  size = line - 1;
   Ranking rank[size];
   if (size >= 5) {
     Ranking rank[5];
@@ -58,29 +60,35 @@ void savePoints(char const *userName) {
           strcpy(rank[j + 1].name, aux.name);
       }
     }
+    // Tenta arrumar aqui para colocar a colocação do player
+    if (strcmp(player.name, rank[k].name) == 0 && player.point == rank[k].point) {
+      player.collocation = k - 1;
+    }
   }
 
   for (j = 0; j < size && j < 5; j++) {
     rank[j].collocation = j + 1;
   }
+  if (size > 5)
+    size = 5;
+
   gameOver(player, rank, size);
 
 }
 
-void gameOver(Ranking player, Ranking rank[5], int size) {
+void gameOver(Ranking player, Ranking *rank, int size) {
   setPaused(true);
-
   char points[12], collocation[5];
 
   renderTextBox(10, 50, -10, -10, 150);
 
-  renderText(-2, 29, 170, "RANKING", text(), LARGE);
+  renderText(-0.5, 29, 170, "RANKING", text(), LARGE);
   renderText(-4, 28, 170, "Colocacao", text(), REGULAR);
   renderText(0, 28, 170, "Nome", text(), REGULAR);
   renderText(3, 28, 170, "Pontos", text(), REGULAR);
   
   int j = 27;
-  for (int i = 0; i < size - 1; i++) {
+  for (int i = 0; i < size; i++) {
     j = j - 2;
 
     intToString(rank[i].collocation, collocation);
@@ -90,20 +98,48 @@ void gameOver(Ranking player, Ranking rank[5], int size) {
     renderText(0, j, 170, rank[i].name, text(), REGULAR);
     renderText(3, j, 170, points, text(), REGULAR);
   }
+  j = j - 2;
+  renderText(-0.5, j, 170, "Jogador", text(), LARGE);
+  renderText(-4, j - 1, 170, "Colocacao", text(), REGULAR);
+  renderText(0, j - 1, 170, "Nome", text(), REGULAR);
+  renderText(3, j - 1, 170, "Pontos", text(), REGULAR);
+
+  intToString(player.collocation, collocation);
+  intToString(player.point, points);
+
+  renderText(-3, j - 2, 170, collocation, text(), REGULAR);
+  renderText(0, j - 2, 170, player.name, text(), REGULAR);
+  renderText(3, j - 2, 170, points, text(), REGULAR);
 }
 
-void renderPoints() {
-  renderText(-15, 80, 0, "PONTOS: ", text(), LARGE);
+void renderPoints(bool perspective) {
+  /* Se for perpectiva, matém os valores que estávamos usando antes. */
+  if (perspective) {
+    renderText(-15, 80, 0, "PONTOS: ", text(), LARGE);
 
-  char stringPts[12];
+    char stringPts[12];
 
-  points++;
+    points++;
 
-  intToString(points, stringPts);
+    intToString(points, stringPts);
 
-  renderText(7, 80, 0, stringPts, text(), LARGE);
+    renderText(7, 80, 0, stringPts, text(), LARGE);
 
-  renderTextBox(20, 90, -20, 75, -1);
+    renderTextBox(20, 90, -20, 75, -1);
+  } else {
+    // Tenta usar os mesmo valores, espero ter ajudado
+    renderText(25, 20, -10, "PONTOS: ", text(), LARGE);
+
+    char stringPts[12];
+
+    points++;
+
+    intToString(points, stringPts);
+
+    renderText(32, 20, -10, stringPts, text(), LARGE);
+
+    renderTextBox(37, 20, 23, 14, -30);
+  }
 }
 
 /**
