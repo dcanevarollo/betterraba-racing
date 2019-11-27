@@ -14,6 +14,8 @@ void configView();
 
 
 bool paused = true;  // Utilizada para pausar o jogo.
+bool finished = false;  // Define se o jogo terminou.
+bool mustShowRanking = false;  // Define se o ranking deve ser exibido.
 
 /* Variáveis de controle da câmera e perspectiva. */
 bool perspective = true;
@@ -24,8 +26,13 @@ int camAxisX = 0, camAxisY = 1, camAxisZ = 0;
 
 char userName[100];
 
+
 void setPaused(bool value) {
   paused = value;
+}
+
+void setFinished(bool value) {
+  finished = value;
 }
 
 /**
@@ -59,31 +66,36 @@ void configView() {
  * @param scenario  : define qual cenário será renderizado (recebido do arquivo main.c).
  */
 void runEngine(short int scenario, short int carColor, char const *username) {
-  configView();
+  if (mustShowRanking)
+    showRanking();
+  else {
+    configView();
 
-  /* Definição das propriedades do carro (apenas na primeira renderização). */
-  if (isFirstRender()) {
-    defineCarProperties();
-    renderObstacles();
+    /* Definição das propriedades do carro (apenas na primeira renderização). */
+    if (isFirstRender()) {
+      defineCarProperties();
+      renderObstacles();
 
-    setFirstRender(false);
+      setFirstRender(false);
+    }
+    
+    strcpy(userName, username);
+
+    /* Cenários e objetos a serem construídos. */
+    toInfiniteAndBeyond(scenario);
+    
+    /* Renderia o contador de pontos*/
+    renderPoints(perspective, paused);
+
+    /* Renderização do carro ("fixo"). */
+    renderMainCar(carColor);
+
+    /* Tratamento de colisões. */
+    collisionTreatment(userName, perspective);
+    
+    if (!paused)
+      glutPostRedisplay();
   }
-  
-  strcpy(userName, username);
-
-  /* Cenários e objetos a serem construídos. */
-  toInfiniteAndBeyond(scenario);
-  
-  /* Renderia o contador de pontos*/
-  renderPoints(perspective);
-
-  /* Renderização do carro ("fixo"). */
-  renderMainCar(carColor);
-
-  collisionTreatment(userName);
-  
-  if (!paused)
-    glutPostRedisplay();
 }
 
 /**
@@ -130,6 +142,7 @@ void keyboard(unsigned char key, int x, int y) {
         camPosZ = 100;
       }
 
+      glutPostRedisplay();
       break;
 
     /* Sai do jogo. */
@@ -138,10 +151,17 @@ void keyboard(unsigned char key, int x, int y) {
       exit(0);
       break;
 
+    case 13:
+      if (finished && !mustShowRanking)
+        mustShowRanking = true;
+        glutPostRedisplay();
+      break;
+
     default:
-      printf("Tecla invalida pressionada.\n\n");
+      printf("Tecla invalida\n");
       break;
   }
 
-  glutPostRedisplay();
+  if (!finished)
+    glutPostRedisplay();
 }

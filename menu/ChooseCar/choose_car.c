@@ -88,7 +88,7 @@ void runCarMenu() {
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  renderText(-3,15, 0, "ESCOLHA SEU CARRO", text(), LARGE);
+  renderText(-3, 15, 0, "ESCOLHA SEU CARRO", text(), LARGE);
   renderText(-1.8, 14, 0, "Escolher: -> ou <-", text(), REGULAR);
   renderText(-1.5, 13, 0, "Avancar: PgUp", text(), REGULAR);
 

@@ -31,6 +31,8 @@ void setObstaclesProperties(Properties *value);
 
 int getObstaclesRendPosition();
 
+int getObstaclesQuantity();
+
 bool isFirstRender();
 
 void setFirstRender(bool value);

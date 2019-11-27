@@ -25,7 +25,7 @@ float obstaclesRendPosition = 0;  // Posição de renderização dos obstáculos
 float lastObstacleRendPosition;  // Posição do último obstáculo renderizado.
 float currentPositionHorizon = INIT_POS;  // posição atual do carro em relação ao horizonte da cena.
 float currentPositionObstacles = INIT_POS;  // posição atual do carro em relação ao último obstáculo renderizado.
-float difficulty = 0;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
+float difficulty = 0.5;  // Dificuldade do jogo. Incrementada a cada superação de ondas de obstáculos.
 
 int obstaclesQuantity = 10;  // Quantidade de obstáculos renderizados.
 
@@ -48,6 +48,10 @@ void setObstaclesProperties(Properties *value) {
 
 int getObstaclesRendPosition() {
   return obstaclesRendPosition;
+}
+
+int getObstaclesQuantity() {
+  return obstaclesQuantity;
 }
 
 bool isFirstRender() {

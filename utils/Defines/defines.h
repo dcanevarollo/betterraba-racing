@@ -2,6 +2,17 @@
 #define DEFINES_H
 
 
+#ifdef WIN32
+    #define CLEAR_SCREEN system("cls")
+    #define CLEAR_BUFFER fflush(stdin)
+#else
+    #define CLEAR_SCREEN system("clear")
+    #define CLEAR_BUFFER __fpurge(stdin)
+
+    #include <stdio_ext.h>
+#endif
+
+
 #define bool char
 #define true 1
 #define false 0

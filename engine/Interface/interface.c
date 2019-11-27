@@ -1,141 +1,162 @@
+/**
+ * @author Rafael Campos e Douglas Brandão
+ * Arquivo com as funções de interface do usuário.
+ */
+
+
 #include "interface.h"
 
-int points = 0;
 
-void savePoints(char const *userName) {
-  FILE *file;
-  char string[12];
-  int line = 0;
-  int size = 0;
+
+char *playerName;
+
+Ranking playerRank;
+Ranking *ranking;
+
+int points = 0;
+int rankingSize;
+
+
+void savePoints() {
+  FILE *rankingFile;
+  char stringPts[12];
+  int lineCounter = 0;
   
   char name[100];
   char point[20];
 
   int numberOfLines = 0;
 
-  Ranking player;
-  strcpy(player.name, userName);
-  player.point = points;
+  strcpy(playerRank.name, playerName);
+  playerRank.point = points;
 
-  file = fopen("./ranking.txt", "a");
-    intToString(player.point, string);
+  rankingFile = fopen("./ranking.txt", "a");
+    intToString(playerRank.point, stringPts);
     
-    fprintf(file, "%s %s\n", player.name, string);
-  fclose(file);
+    fprintf(rankingFile, "%s %s\n", playerRank.name, stringPts);
+  fclose(rankingFile);
 
-  file = fopen("./ranking.txt", "r");
+  rankingFile = fopen("./ranking.txt", "r");
   
-  int n;
-  while (!feof(file)) {
-      fscanf(file, "%s %s", name, point);
-      line++;
+  while (!feof(rankingFile)) {
+    fscanf(rankingFile, "%s %s", name, point);
+    lineCounter++;
   }
 
-  rewind(file);
+  rewind(rankingFile);
   
-  size = line - 1;
-  Ranking rank[size];
-  if (size >= 5) {
-    Ranking rank[5];
-  }
-
+  rankingSize = lineCounter - 1;
+  ranking = (Ranking *) malloc(rankingSize * sizeof(Ranking));
+  
   int i = 0;
-  while (!feof(file)) {
-      fscanf(file, "%s %d", rank[i].name, &rank[i].point);
-      i++;
+  while (!feof(rankingFile)) {
+    fscanf(rankingFile, "%s %d", ranking[i].name, &ranking[i].point);
+    i++;
   }
 
-  fclose(file);
+  fclose(rankingFile);
 
   int k, j; 
-  Ranking aux;
-  for (k = 0; k < size; k++) {
-    for (j = 0; j < size - k; j++) {
-      if (rank[j].point < rank[j + 1].point) {
-          aux.point = rank[j].point;
-          strcpy(aux.name, rank[j].name);
-          rank[j].point = rank[j + 1].point;
-          strcpy(rank[j].name, rank[j + 1].name);
-          rank[j + 1].point = aux.point;
-          strcpy(rank[j + 1].name, aux.name);
+  Ranking tempRank;
+  for (k = 0; k < rankingSize; k++)
+    for (j = 0; j < rankingSize - k; j++)
+      if (ranking[j].point < ranking[j + 1].point) {
+          tempRank.point = ranking[j].point;
+          strcpy(tempRank.name, ranking[j].name);
+
+          ranking[j].point = ranking[j + 1].point;
+          strcpy(ranking[j].name, ranking[j + 1].name);
+
+          ranking[j + 1].point = tempRank.point;
+          strcpy(ranking[j + 1].name, tempRank.name);
       }
-    }
-    // Tenta arrumar aqui para colocar a colocação do player
-    if (strcmp(player.name, rank[k].name) == 0 && player.point == rank[k].point) {
-      player.collocation = k - 1;
-    }
-  }
 
-  for (j = 0; j < size && j < 5; j++) {
-    rank[j].collocation = j + 1;
-  }
-  if (size > 5)
-    size = 5;
+  for (j = 0; j < rankingSize && j < 5; j++)
+    ranking[j].collocation = j + 1;
 
-  gameOver(player, rank, size);
-
+  if (rankingSize > 5)
+    rankingSize = 5;
 }
 
-void gameOver(Ranking player, Ranking *rank, int size) {
+void gameOver(const char *playerName, bool perspective) {
+  savePoints();
+
   setPaused(true);
+  setFinished(true);
+  
+  if (perspective) {
+    renderTextBox(20, 50, -20, 30, -1);
+
+    renderText(-9.5, 40, 0, "GAME OVER", text(), LARGE);
+    renderText(-11, 35, 0, "Pressione a tecla ENTER", text(), REGULAR);
+  } else {
+    renderTextBox(-10, 10, 10, 4, -40);
+
+    renderText(-4, 11, -20, "GAME OVER", text(), LARGE);
+    renderText(-6, 9.5, -20, "Pressione a tecla ENTER", text(), REGULAR);
+  }
+}
+
+void showRanking() {
+  /* Define a cor de fundo (fundo escuro). */
+  glClearColor(32.0f/255.0f, 32.0f/255.0f,  32.0/255.0f, 1.0f);
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(45, 1, 1, 70);
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
+  gluLookAt(0, 0, 40, 0, 0, 0, 0, 1, 0);
+
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
   char points[12], collocation[5];
 
-  renderTextBox(10, 50, -10, -10, 150);
-
-  renderText(-0.5, 29, 170, "RANKING", text(), LARGE);
-  renderText(-4, 28, 170, "Colocacao", text(), REGULAR);
-  renderText(0, 28, 170, "Nome", text(), REGULAR);
-  renderText(3, 28, 170, "Pontos", text(), REGULAR);
+  renderText(-0.5, 11, 0, "TOP 5", text(), LARGE);
+  renderText(-4, 9, 0, "COLOCACAO", text(), REGULAR);
+  renderText(0, 9, 0, "NOME", text(), REGULAR);
+  renderText(3, 9, 0, "PONTOS", text(), REGULAR);
   
-  int j = 27;
-  for (int i = 0; i < size; i++) {
-    j = j - 2;
+  int i;
+  int j = 8;
+  for (i = 0; i < rankingSize; i++, j -= 2) {
+    intToString(ranking[i].collocation, collocation);
+    intToString(ranking[i].point, points);
 
-    intToString(rank[i].collocation, collocation);
-    intToString(rank[i].point, points);
-
-    renderText(-3, j, 170, collocation, text(), REGULAR);
-    renderText(0, j, 170, rank[i].name, text(), REGULAR);
-    renderText(3, j, 170, points, text(), REGULAR);
+    renderText(-3, j, 0, collocation, text(), REGULAR);
+    renderText(0, j, 0, ranking[i].name, text(), REGULAR);
+    renderText(3, j, 0, points, text(), REGULAR);
   }
-  j = j - 2;
-  renderText(-0.5, j, 170, "Jogador", text(), LARGE);
-  renderText(-4, j - 1, 170, "Colocacao", text(), REGULAR);
-  renderText(0, j - 1, 170, "Nome", text(), REGULAR);
-  renderText(3, j - 1, 170, "Pontos", text(), REGULAR);
 
-  intToString(player.collocation, collocation);
-  intToString(player.point, points);
+  j -= 2;
+  renderText(-1, j, 0, "JOGADOR", text(), LARGE);
+  renderText(-2, j - 2, 0, "NOME", text(), REGULAR);
+  renderText(2, j - 2, 0, "PONTOS", text(), REGULAR);
 
-  renderText(-3, j - 2, 170, collocation, text(), REGULAR);
-  renderText(0, j - 2, 170, player.name, text(), REGULAR);
-  renderText(3, j - 2, 170, points, text(), REGULAR);
+  intToString(playerRank.point, points);
+
+  renderText(-2, j - 3, 0, playerRank.name, text(), REGULAR);
+  renderText(2, j - 3, 0, points, text(), REGULAR);
 }
 
-void renderPoints(bool perspective) {
-  /* Se for perpectiva, matém os valores que estávamos usando antes. */
-  if (perspective) {
-    renderText(-15, 80, 0, "PONTOS: ", text(), LARGE);
+void renderPoints(bool perspective, bool paused) {
+  char stringPts[12];
 
-    char stringPts[12];
-
+  if (!paused)
     points++;
 
-    intToString(points, stringPts);
+  intToString(points, stringPts);
 
+  /* Se for perpectiva, mantém os valores que estávamos usando antes. */
+  if (perspective) {
+    renderText(-15, 80, 0, "PONTOS: ", text(), LARGE);
     renderText(7, 80, 0, stringPts, text(), LARGE);
 
     renderTextBox(20, 90, -20, 75, -1);
   } else {
-    // Tenta usar os mesmo valores, espero ter ajudado
     renderText(25, 20, -10, "PONTOS: ", text(), LARGE);
-
-    char stringPts[12];
-
-    points++;
-
-    intToString(points, stringPts);
-
     renderText(32, 20, -10, stringPts, text(), LARGE);
 
     renderTextBox(37, 20, 23, 14, -30);
@@ -143,7 +164,7 @@ void renderPoints(bool perspective) {
 }
 
 /**
- * Função responsável por renderizar a textos em um quadrado.
+ * Função responsável por renderizar uma caixa de textos.
  */
 void renderTextBox(float x1, float y1, float x2, float y2, float z) {
   Color quadColor = darkGrey();

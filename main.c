@@ -29,6 +29,8 @@ bool carMenuActive = true;
 bool mapMenuActive = false;
 bool engineActive = false;
 
+char *playerName;
+
 
 void display();
 void runCarMenu();
@@ -51,7 +53,7 @@ void display() {
   else if (mapMenuActive)
     runMapMenu();
   else if (engineActive)
-    runEngine(getCurrentMap(), getCurrentColor(), "Douglas");
+    runEngine(getCurrentMap(), getCurrentColor(), playerName);
 
   glutSwapBuffers();
 }
@@ -123,7 +125,7 @@ void specialKeyboard(int key, int x, int y) {
         break;
 
       default:
-        printf("Tecla invalida pressionada.\n\n");
+        printf("Tecla invalida\n");
         break;
     }
 
@@ -135,6 +137,18 @@ void specialKeyboard(int key, int x, int y) {
  * Função principal de inicialização do jogo.
  */
 int main(int argc, char **argv) {
+  CLEAR_SCREEN;
+
+  /* Coleta, primeiramente, o nome do jogador. */
+  char tempName[11];
+
+  printf("Nickname (max. 10 caracteres):\n> ");
+  scanf("%10[^\n]", tempName);
+  CLEAR_BUFFER;
+
+  playerName = (char *) malloc((strlen(tempName) + 1) * sizeof(char));
+  strcpy(playerName, tempName);
+
   glutInit(&argc, argv);
 
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

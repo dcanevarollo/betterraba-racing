@@ -10,6 +10,6 @@
     "interface.h": "c",
     "conversions.h": "c",
     "root.h": "c",
-    "*.h\u0000h": "c"
+    "*.h": "c"
   }
 }

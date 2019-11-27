@@ -25,6 +25,8 @@
 
 void setPaused(bool value);
 
+void setFinished(bool value);
+
 void runEngine(short int scenario, short int carColor, char const *username);
 
 void keyboard(unsigned char key, int x, int y);

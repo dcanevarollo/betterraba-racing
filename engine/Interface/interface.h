@@ -8,18 +8,19 @@
 
 #include "../../utils/Conversions/conversions.h"
 #include "../../utils/Ranking/ranking.h"
+
 #include "../Root/root.h"
 
-void setPlayerName(char *playerName);
 
-void gameOver();
+void gameOver(char const *playerName, bool perspective);
 
-void savePoints(char const *userName);
+void showRanking();
 
-void renderPoints(bool perspective);
+void renderPoints(bool perspective, bool paused);
 
 void renderTextBox(float x1, float y1, float x2, float y2, float z);
 
 void renderText(float x, float y, float z, char *string, Color color, short int size);
+
 
 #endif

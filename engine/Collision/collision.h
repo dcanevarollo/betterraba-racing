@@ -14,6 +14,6 @@
 
 void setPositionElements();
 
-void collisionTreatment(char const *username);
+void collisionTreatment(char const *username, bool perspective);
 
 #endif
